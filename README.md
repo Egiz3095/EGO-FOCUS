@@ -1,0 +1,2 @@
+# EGO-FOCUS
+Notes 
