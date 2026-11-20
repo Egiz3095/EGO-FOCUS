@@ -557,7 +557,6 @@ enum NaturalLanguageTaskParser {
                 if let explicitDay { day = calendar.date(from: explicitDay) }
             }
 
-            let dateDetected = day != nil || (recurrence != .none)
             let h = finalHour()
 
             if let h {

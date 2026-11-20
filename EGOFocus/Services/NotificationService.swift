@@ -161,7 +161,7 @@ final class NotificationService: NSObject, UNUserNotificationCenterDelegate {
     }
 
     /// "task.<uuid>.<offset>" or "snooze.<uuid>.<stamp>" → "<uuid>"
-    static func taskID(fromIdentifier identifier: String) -> String? {
+    nonisolated static func taskID(fromIdentifier identifier: String) -> String? {
         let parts = identifier.split(separator: ".")
         guard parts.count >= 2, parts[0] == "task" || parts[0] == "snooze" else { return nil }
         return String(parts[1])
