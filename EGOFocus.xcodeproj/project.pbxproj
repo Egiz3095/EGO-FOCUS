@@ -1,0 +1,663 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		751A30421F20CC6344CC93AA /* EGOFocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C631C4C3B3F342F5B217D7 /* EGOFocusApp.swift */; };
+		0C0488819D6B9C7FE2D7B78F /* TaskRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5E007A061966068418C1C2 /* TaskRecord.swift */; };
+		8A9AD326A51CBD98BC7532BC /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2BE58A90A2F4D21F113CF2 /* TaskStore.swift */; };
+		A70C3B4311DF9B553C09C6FC /* NaturalLanguageTaskParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043678E22B03EDA1488DAD79 /* NaturalLanguageTaskParser.swift */; };
+		BD6D03B4C473655B52FDB7A2 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686CE005B17C7A7B2E79073C /* NotificationService.swift */; };
+		736A2BFF28BF60A643EC407E /* SpeechInputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EBB945DFA6FDCF8CA77546 /* SpeechInputManager.swift */; };
+		5048ACA2EE59D580E05503CC /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5E68C9B2FCECDE9D4F417D /* AppEnvironment.swift */; };
+		6ED1131A769CE5C704B7D0E5 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADF0AFF357E9BCA6977BEA5 /* DemoData.swift */; };
+		517D991567A832A0784E87E6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9078AD1113189E82A27AF716 /* Persistence.swift */; };
+		C6C593732FB355E199FFE8AB /* AssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DC4376EA361CBBB84030AE /* AssistantView.swift */; };
+		C2BDF4B83E79BBA4FBFB6EE6 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0C9930F4F763D1F4AE4F6E /* CalendarView.swift */; };
+		BB89B53F2F56FBBD6CFA4677 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459054138245CFD0763E61F5 /* Components.swift */; };
+		200898DD68E6E72849A1C50A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AF5F74B8AF0FDED46D093B /* HomeView.swift */; };
+		C2C3B99C851AE75F1DB0870A /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D56EF2B14AFA56FEC989E42 /* ReportsView.swift */; };
+		E075F784257DF2CF24508003 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C4997732D723C55C7D0D5F /* RootView.swift */; };
+		6D77F3E958782125C8E4D2BD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8CB682B88C9F166CDE1CFD /* SettingsView.swift */; };
+		2C5FDDFF62CC4D9807BB0F63 /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC54E4DAF2746D0A5624ABB /* TaskEditorView.swift */; };
+		C930A518FB644054CBE138FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D62E681FBEE5343D65ADDA60 /* Assets.xcassets */; };
+		ABDC6CEBC72E2CBD2B65895D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0B35A013C8D707654F4448DD /* PrivacyInfo.xcprivacy */; };
+		5EDD032E1E8EE7B0BA139616 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEF2F269AF2B0666A2E2DE0 /* TestSupport.swift */; };
+		F4D1C0D5C22C602C45CCDD31 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8601E00E86A20F1102B9AB05 /* ParserTests.swift */; };
+		C20E886C2402CBE0C899C504 /* RecurrenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2161721BC4F768C272F8E81 /* RecurrenceTests.swift */; };
+		70144594739544CDCBC4786F /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B3674E9C920F558E35D66 /* StoreTests.swift */; };
+		DBF7ADCEDA4081CD4E09F676 /* PersistenceAndNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE36F2A307200BA3D99BB4 /* PersistenceAndNotificationTests.swift */; };
+		304FD992818797045F343067 /* EGOFocusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6292865C75734DF6942301FA /* EGOFocusUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		31BFC27A28804204E691B25E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02C1F1E209F320AEE194B5DB;
+			remoteInfo = EGOFocus;
+		};
+		8F2DB98C3AF51310A63FC237 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02C1F1E209F320AEE194B5DB;
+			remoteInfo = EGOFocus;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B0C631C4C3B3F342F5B217D7 /* EGOFocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EGOFocusApp.swift; sourceTree = "<group>"; };
+		3E5E007A061966068418C1C2 /* TaskRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRecord.swift; sourceTree = "<group>"; };
+		4A2BE58A90A2F4D21F113CF2 /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		043678E22B03EDA1488DAD79 /* NaturalLanguageTaskParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaturalLanguageTaskParser.swift; sourceTree = "<group>"; };
+		686CE005B17C7A7B2E79073C /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		78EBB945DFA6FDCF8CA77546 /* SpeechInputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechInputManager.swift; sourceTree = "<group>"; };
+		6F5E68C9B2FCECDE9D4F417D /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		DADF0AFF357E9BCA6977BEA5 /* DemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
+		9078AD1113189E82A27AF716 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		18DC4376EA361CBBB84030AE /* AssistantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantView.swift; sourceTree = "<group>"; };
+		AF0C9930F4F763D1F4AE4F6E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		459054138245CFD0763E61F5 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		17AF5F74B8AF0FDED46D093B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		7D56EF2B14AFA56FEC989E42 /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
+		28C4997732D723C55C7D0D5F /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		DE8CB682B88C9F166CDE1CFD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AFC54E4DAF2746D0A5624ABB /* TaskEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorView.swift; sourceTree = "<group>"; };
+		D62E681FBEE5343D65ADDA60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0D4E00524B6461A88A1A62CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B35A013C8D707654F4448DD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FAEF2F269AF2B0666A2E2DE0 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
+		8601E00E86A20F1102B9AB05 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
+		A2161721BC4F768C272F8E81 /* RecurrenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceTests.swift; sourceTree = "<group>"; };
+		0A5B3674E9C920F558E35D66 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		6BCE36F2A307200BA3D99BB4 /* PersistenceAndNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceAndNotificationTests.swift; sourceTree = "<group>"; };
+		6292865C75734DF6942301FA /* EGOFocusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EGOFocusUITests.swift; sourceTree = "<group>"; };
+		4F0A058015A4F25BAB952F9F /* EGOFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EGOFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DDBD012C4226BC87599B49A /* EGOFocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EGOFocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		56365554BAF07798578AC1F1 /* EGOFocusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EGOFocusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1744AB85339E9B3D18CB28C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2110FF3A69C933B5D1639ED2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		50E2D728D050C9B841D43363 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A2772EB5676ED2B691193947 = {
+			isa = PBXGroup;
+			children = (
+				67D023E6248F5E49299597E3 /* EGOFocus */,
+				93142522D00877BEDC88BF80 /* EGOFocusTests */,
+				C80F8A108DA9DBC05E4C61E9 /* EGOFocusUITests */,
+				8241ED42B56CC1DA7F726566 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		67D023E6248F5E49299597E3 /* EGOFocus */ = {
+			isa = PBXGroup;
+			children = (
+				EB576938F6C0A784E8DA35DC /* App */,
+				38B83B5AAAFC0E7212F3041C /* Models */,
+				60BB7E24DF83B8B161E08A6A /* Stores */,
+				FF60FF4AC657E51EB8DFB336 /* Services */,
+				B8FAEB933F034EEA89ED6725 /* Support */,
+				D1CF58ABCAF5FC065209D59B /* Views */,
+				96912E7FBD193A0DB0E8D455 /* Resources */,
+			);
+			path = EGOFocus;
+			sourceTree = "<group>";
+		};
+		EB576938F6C0A784E8DA35DC /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B0C631C4C3B3F342F5B217D7 /* EGOFocusApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		38B83B5AAAFC0E7212F3041C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3E5E007A061966068418C1C2 /* TaskRecord.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		60BB7E24DF83B8B161E08A6A /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				4A2BE58A90A2F4D21F113CF2 /* TaskStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		FF60FF4AC657E51EB8DFB336 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				043678E22B03EDA1488DAD79 /* NaturalLanguageTaskParser.swift */,
+				686CE005B17C7A7B2E79073C /* NotificationService.swift */,
+				78EBB945DFA6FDCF8CA77546 /* SpeechInputManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B8FAEB933F034EEA89ED6725 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				6F5E68C9B2FCECDE9D4F417D /* AppEnvironment.swift */,
+				DADF0AFF357E9BCA6977BEA5 /* DemoData.swift */,
+				9078AD1113189E82A27AF716 /* Persistence.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		D1CF58ABCAF5FC065209D59B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18DC4376EA361CBBB84030AE /* AssistantView.swift */,
+				AF0C9930F4F763D1F4AE4F6E /* CalendarView.swift */,
+				459054138245CFD0763E61F5 /* Components.swift */,
+				17AF5F74B8AF0FDED46D093B /* HomeView.swift */,
+				7D56EF2B14AFA56FEC989E42 /* ReportsView.swift */,
+				28C4997732D723C55C7D0D5F /* RootView.swift */,
+				DE8CB682B88C9F166CDE1CFD /* SettingsView.swift */,
+				AFC54E4DAF2746D0A5624ABB /* TaskEditorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		96912E7FBD193A0DB0E8D455 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D62E681FBEE5343D65ADDA60 /* Assets.xcassets */,
+				0D4E00524B6461A88A1A62CF /* Info.plist */,
+				0B35A013C8D707654F4448DD /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		93142522D00877BEDC88BF80 /* EGOFocusTests */ = {
+			isa = PBXGroup;
+			children = (
+				FAEF2F269AF2B0666A2E2DE0 /* TestSupport.swift */,
+				8601E00E86A20F1102B9AB05 /* ParserTests.swift */,
+				A2161721BC4F768C272F8E81 /* RecurrenceTests.swift */,
+				0A5B3674E9C920F558E35D66 /* StoreTests.swift */,
+				6BCE36F2A307200BA3D99BB4 /* PersistenceAndNotificationTests.swift */,
+			);
+			path = EGOFocusTests;
+			sourceTree = "<group>";
+		};
+		C80F8A108DA9DBC05E4C61E9 /* EGOFocusUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6292865C75734DF6942301FA /* EGOFocusUITests.swift */,
+			);
+			path = EGOFocusUITests;
+			sourceTree = "<group>";
+		};
+		8241ED42B56CC1DA7F726566 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F0A058015A4F25BAB952F9F /* EGOFocus.app */,
+				6DDBD012C4226BC87599B49A /* EGOFocusTests.xctest */,
+				56365554BAF07798578AC1F1 /* EGOFocusUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		02C1F1E209F320AEE194B5DB /* EGOFocus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3DBF37D79AC5F33C3DF45EAB /* Build configuration list for PBXNativeTarget "EGOFocus" */;
+			buildPhases = (
+				379F895305B5B95BE6C42AF7 /* Sources */,
+				B1744AB85339E9B3D18CB28C /* Frameworks */,
+				23421E397858E8399031DEE0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EGOFocus;
+			productName = EGOFocus;
+			productReference = 4F0A058015A4F25BAB952F9F /* EGOFocus.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F25C62AC257F862CF58B8769 /* EGOFocusTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4BCEA07E1F8D1B6660E90629 /* Build configuration list for PBXNativeTarget "EGOFocusTests" */;
+			buildPhases = (
+				4A5B6D5D7CC8C08F2BAD38AE /* Sources */,
+				2110FF3A69C933B5D1639ED2 /* Frameworks */,
+				2CE959E16287E6CF3C1CE98B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9F05AC49A84112621D0250FA /* PBXTargetDependency */,
+			);
+			name = EGOFocusTests;
+			productName = EGOFocusTests;
+			productReference = 6DDBD012C4226BC87599B49A /* EGOFocusTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		37453B64B60FF9E20EC08590 /* EGOFocusUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8139E85A7316C83990A916DC /* Build configuration list for PBXNativeTarget "EGOFocusUITests" */;
+			buildPhases = (
+				309A58A6CE42E3C17C4A5983 /* Sources */,
+				50E2D728D050C9B841D43363 /* Frameworks */,
+				93866221A0417C720199ED02 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B04EEB59A962E8E262314AA7 /* PBXTargetDependency */,
+			);
+			name = EGOFocusUITests;
+			productName = EGOFocusUITests;
+			productReference = 56365554BAF07798578AC1F1 /* EGOFocusUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					02C1F1E209F320AEE194B5DB = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					F25C62AC257F862CF58B8769 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 02C1F1E209F320AEE194B5DB;
+					};
+					37453B64B60FF9E20EC08590 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 02C1F1E209F320AEE194B5DB;
+					};
+				};
+			};
+			buildConfigurationList = AC4D63F12EBBDCB32DFBA89F /* Build configuration list for PBXProject "EGOFocus" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ar;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ar,
+				Base,
+			);
+			mainGroup = A2772EB5676ED2B691193947;
+			productRefGroup = 8241ED42B56CC1DA7F726566 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				02C1F1E209F320AEE194B5DB /* EGOFocus */,
+				F25C62AC257F862CF58B8769 /* EGOFocusTests */,
+				37453B64B60FF9E20EC08590 /* EGOFocusUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		23421E397858E8399031DEE0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C930A518FB644054CBE138FB /* Assets.xcassets in Resources */,
+				ABDC6CEBC72E2CBD2B65895D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CE959E16287E6CF3C1CE98B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93866221A0417C720199ED02 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		379F895305B5B95BE6C42AF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				751A30421F20CC6344CC93AA /* EGOFocusApp.swift in Sources */,
+				0C0488819D6B9C7FE2D7B78F /* TaskRecord.swift in Sources */,
+				8A9AD326A51CBD98BC7532BC /* TaskStore.swift in Sources */,
+				A70C3B4311DF9B553C09C6FC /* NaturalLanguageTaskParser.swift in Sources */,
+				BD6D03B4C473655B52FDB7A2 /* NotificationService.swift in Sources */,
+				736A2BFF28BF60A643EC407E /* SpeechInputManager.swift in Sources */,
+				5048ACA2EE59D580E05503CC /* AppEnvironment.swift in Sources */,
+				6ED1131A769CE5C704B7D0E5 /* DemoData.swift in Sources */,
+				517D991567A832A0784E87E6 /* Persistence.swift in Sources */,
+				C6C593732FB355E199FFE8AB /* AssistantView.swift in Sources */,
+				C2BDF4B83E79BBA4FBFB6EE6 /* CalendarView.swift in Sources */,
+				BB89B53F2F56FBBD6CFA4677 /* Components.swift in Sources */,
+				200898DD68E6E72849A1C50A /* HomeView.swift in Sources */,
+				C2C3B99C851AE75F1DB0870A /* ReportsView.swift in Sources */,
+				E075F784257DF2CF24508003 /* RootView.swift in Sources */,
+				6D77F3E958782125C8E4D2BD /* SettingsView.swift in Sources */,
+				2C5FDDFF62CC4D9807BB0F63 /* TaskEditorView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A5B6D5D7CC8C08F2BAD38AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5EDD032E1E8EE7B0BA139616 /* TestSupport.swift in Sources */,
+				F4D1C0D5C22C602C45CCDD31 /* ParserTests.swift in Sources */,
+				C20E886C2402CBE0C899C504 /* RecurrenceTests.swift in Sources */,
+				70144594739544CDCBC4786F /* StoreTests.swift in Sources */,
+				DBF7ADCEDA4081CD4E09F676 /* PersistenceAndNotificationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		309A58A6CE42E3C17C4A5983 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				304FD992818797045F343067 /* EGOFocusUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9F05AC49A84112621D0250FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02C1F1E209F320AEE194B5DB /* EGOFocus */;
+			targetProxy = 31BFC27A28804204E691B25E /* PBXContainerItemProxy */;
+		};
+		B04EEB59A962E8E262314AA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02C1F1E209F320AEE194B5DB /* EGOFocus */;
+			targetProxy = 8F2DB98C3AF51310A63FC237 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		64709C05FD3E8D2FCB9AC2AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = gnu++20;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		03E09CFA6F3B6CA7574DF724 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = gnu++20;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		15040B2502FF8E0D46A1C396 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EGOFocus/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "EGO FOCUS";
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "يستخدم إيجو فوكس الميكروفون فقط عند ضغطك زر الإملاء لتحويل كلامك إلى مهمة.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "يستخدم إيجو فوكس التعرف على الكلام من Apple لتحويل المهام التي تمليها بالعربية إلى نص تراجعه قبل الحفظ.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks;
+				PRODUCT_MODULE_NAME = EGOFocus;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3EA4D6D9ABB9D4F305C12401 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EGOFocus/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "EGO FOCUS";
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "يستخدم إيجو فوكس الميكروفون فقط عند ضغطك زر الإملاء لتحويل كلامك إلى مهمة.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "يستخدم إيجو فوكس التعرف على الكلام من Apple لتحويل المهام التي تمليها بالعربية إلى نص تراجعه قبل الحفظ.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks;
+				PRODUCT_MODULE_NAME = EGOFocus;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		0925A4375B8E9153ABDF384B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EGOFocus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EGOFocus";
+			};
+			name = Debug;
+		};
+		6251CF8684002D73EA16BB10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EGOFocus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EGOFocus";
+			};
+			name = Release;
+		};
+		B1055745D7EE33AAB4E881D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = EGOFocus;
+			};
+			name = Debug;
+		};
+		A887CB6012A5FF34D1FBA75A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.egofocus.tasks.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = EGOFocus;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AC4D63F12EBBDCB32DFBA89F /* Build configuration list for PBXProject "EGOFocus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64709C05FD3E8D2FCB9AC2AD /* Debug */,
+				03E09CFA6F3B6CA7574DF724 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DBF37D79AC5F33C3DF45EAB /* Build configuration list for PBXNativeTarget "EGOFocus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15040B2502FF8E0D46A1C396 /* Debug */,
+				3EA4D6D9ABB9D4F305C12401 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4BCEA07E1F8D1B6660E90629 /* Build configuration list for PBXNativeTarget "EGOFocusTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0925A4375B8E9153ABDF384B /* Debug */,
+				6251CF8684002D73EA16BB10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8139E85A7316C83990A916DC /* Build configuration list for PBXNativeTarget "EGOFocusUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1055745D7EE33AAB4E881D4 /* Debug */,
+				A887CB6012A5FF34D1FBA75A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}

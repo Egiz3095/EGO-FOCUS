@@ -1,0 +1,10 @@
+DerivedData/
+build/
+results/
+screenshots/
+Payload/
+*.ipa
+*.xcresult
+*.xcuserstate
+xcuserdata/
+.DS_Store

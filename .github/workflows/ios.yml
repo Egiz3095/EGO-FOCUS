@@ -1,0 +1,175 @@
+name: iOS build, test & package
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      signed_export:
+        description: "Also produce a signed build (needs the App Store Connect API secrets)"
+        type: choice
+        default: none
+        options: [none, testflight, adhoc]
+
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build, test on iPhone Simulator, archive
+    runs-on: macos-15
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Xcode & SDK versions
+        run: |
+          xcodebuild -version | tee xcode-version.txt
+          xcodebuild -showsdks | grep -i ios | tee -a xcode-version.txt
+
+      - name: Pick and boot an iPhone simulator
+        id: sim
+        run: |
+          UDID=$(python3 scripts/ci/pick_simulator.py 2> sim-name.txt)
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+          cat sim-name.txt | tee -a xcode-version.txt
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Build for testing (Debug, simulator)
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project EGOFocus.xcodeproj -scheme EGOFocus \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath DerivedData 2>&1 | tee build-sim.log | grep -E "(error|warning):|\*\* " || true
+          grep -q "\*\* TEST BUILD SUCCEEDED \*\*" build-sim.log
+
+      - name: Unit tests
+        id: unit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild test-without-building \
+            -project EGOFocus.xcodeproj -scheme EGOFocus \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath DerivedData -only-testing:EGOFocusTests \
+            -resultBundlePath results/UnitTests.xcresult 2>&1 | tee unit-tests.log | grep -E "Test Case|error:|\*\* " || true
+          grep -q "\*\* TEST EXECUTE SUCCEEDED \*\*" unit-tests.log
+
+      - name: UI tests
+        id: ui
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild test-without-building \
+            -project EGOFocus.xcodeproj -scheme EGOFocus \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath DerivedData -only-testing:EGOFocusUITests \
+            -resultBundlePath results/UITests.xcresult 2>&1 | tee ui-tests.log | grep -E "Test Case|error:|\*\* " || true
+          grep -q "\*\* TEST EXECUTE SUCCEEDED \*\*" ui-tests.log
+
+      - name: Test summaries
+        if: always()
+        run: |
+          for r in UnitTests UITests; do
+            if [ -d "results/$r.xcresult" ]; then
+              xcrun xcresulttool get test-results summary --path "results/$r.xcresult" > "results/$r-summary.json" || true
+              xcrun xcresulttool get test-results tests --path "results/$r.xcresult" > "results/$r-tests.json" || true
+              mkdir -p "results/$r-attachments"
+              xcrun xcresulttool export attachments --path "results/$r.xcresult" --output-path "results/$r-attachments" || true
+            fi
+          done
+
+      - name: Screenshots (light & dark, Arabic RTL)
+        if: always()
+        run: |
+          APP=$(find DerivedData/Build/Products -maxdepth 2 -path "*Debug-iphonesimulator/EGOFocus.app" | head -1)
+          scripts/ci/screenshots.sh "${{ steps.sim.outputs.udid }}" "$APP" screenshots
+          (cd "$(dirname "$APP")" && zip -qry "$GITHUB_WORKSPACE/EGOFocus-Simulator.app.zip" EGOFocus.app)
+
+      - name: Release archive for device (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project EGOFocus.xcodeproj -scheme EGOFocus -configuration Release \
+            -destination "generic/platform=iOS" -archivePath build/EGOFocus.xcarchive \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" 2>&1 \
+            | tee build-device.log | grep -E "(error|warning):|\*\* " || true
+          grep -q "\*\* ARCHIVE SUCCEEDED \*\*" build-device.log
+          mkdir -p Payload && cp -R build/EGOFocus.xcarchive/Products/Applications/EGOFocus.app Payload/
+          zip -qry EGOFocus-UNSIGNED-not-installable.ipa Payload
+          /usr/libexec/PlistBuddy -c Print build/EGOFocus.xcarchive/Products/Applications/EGOFocus.app/Info.plist > built-Info.plist.txt
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: egofocus-build-and-test
+          path: |
+            xcode-version.txt
+            build-sim.log
+            build-device.log
+            unit-tests.log
+            ui-tests.log
+            built-Info.plist.txt
+            results/*.json
+            results/*-attachments
+            screenshots
+            EGOFocus-Simulator.app.zip
+            EGOFocus-UNSIGNED-not-installable.ipa
+          retention-days: 30
+
+      - name: Fail if tests failed
+        if: steps.unit.outcome != 'success' || steps.ui.outcome != 'success'
+        run: |
+          echo "unit=${{ steps.unit.outcome }} ui=${{ steps.ui.outcome }}"
+          exit 1
+
+  signed:
+    name: Signed build (TestFlight or Ad Hoc)
+    needs: build-test
+    if: github.event_name == 'workflow_dispatch' && inputs.signed_export != 'none'
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check signing secrets
+        run: |
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8_BASE64 TEAM_ID; do
+            if [ -z "${!v}" ]; then echo "Missing secret for $v — see SIGNING.md"; exit 1; fi
+          done
+      - name: Archive with automatic signing
+        run: |
+          set -o pipefail
+          mkdir -p ~/private_keys
+          echo "$ASC_KEY_P8_BASE64" | base64 --decode > ~/private_keys/AuthKey_$ASC_KEY_ID.p8
+          xcodebuild archive -project EGOFocus.xcodeproj -scheme EGOFocus -configuration Release \
+            -destination "generic/platform=iOS" -archivePath build/EGOFocus.xcarchive \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" | tail -40
+      - name: Export
+        run: |
+          set -o pipefail
+          if [ "${{ inputs.signed_export }}" = "testflight" ]; then OPTS=scripts/ci/ExportOptions-AppStore.plist; else OPTS=scripts/ci/ExportOptions-AdHoc.plist; fi
+          sed "s/TEAM_ID_PLACEHOLDER/$TEAM_ID/" "$OPTS" > ExportOptions.plist
+          xcodebuild -exportArchive -archivePath build/EGOFocus.xcarchive -exportPath export \
+            -exportOptionsPlist ExportOptions.plist -allowProvisioningUpdates \
+            -authenticationKeyPath ~/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" | tail -40
+          ls -la export || true
+      - name: Upload signed IPA
+        if: inputs.signed_export == 'adhoc'
+        uses: actions/upload-artifact@v4
+        with:
+          name: egofocus-signed-adhoc
+          path: export/*.ipa
+      - name: Clean up key
+        if: always()
+        run: rm -rf ~/private_keys
