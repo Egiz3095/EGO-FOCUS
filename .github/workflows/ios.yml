@@ -2,6 +2,7 @@ name: iOS build, test & package
 
 on:
   push:
+    branches-ignore: [ci-results]
   workflow_dispatch:
     inputs:
       signed_export:
@@ -13,6 +14,9 @@ on:
 concurrency:
   group: ios-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: write
 
 jobs:
   build-test:
@@ -36,6 +40,9 @@ jobs:
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
 
+      - name: Lint project file
+        run: plutil -lint EGOFocus.xcodeproj/project.pbxproj && xcodebuild -list -project EGOFocus.xcodeproj
+
       - name: Build for testing (Debug, simulator)
         run: |
           set -o pipefail
@@ -43,7 +50,9 @@ jobs:
             -project EGOFocus.xcodeproj -scheme EGOFocus \
             -destination "id=${{ steps.sim.outputs.udid }}" \
             -derivedDataPath DerivedData 2>&1 | tee build-sim.log | grep -E "(error|warning):|\*\* " || true
-          grep -q "\*\* TEST BUILD SUCCEEDED \*\*" build-sim.log
+          if ! grep -q "\*\* TEST BUILD SUCCEEDED \*\*" build-sim.log; then
+            grep -E -A3 "error:" build-sim.log | head -200; tail -40 build-sim.log; exit 1
+          fi
 
       - name: Unit tests
         id: unit
@@ -82,7 +91,7 @@ jobs:
           done
 
       - name: Screenshots (light & dark, Arabic RTL)
-        if: always()
+        if: always() && hashFiles('DerivedData/Build/Products/Debug-iphonesimulator/EGOFocus.app/Info.plist') != ''
         run: |
           APP=$(find DerivedData/Build/Products -maxdepth 2 -path "*Debug-iphonesimulator/EGOFocus.app" | head -1)
           scripts/ci/screenshots.sh "${{ steps.sim.outputs.udid }}" "$APP" screenshots
@@ -96,7 +105,9 @@ jobs:
             -destination "generic/platform=iOS" -archivePath build/EGOFocus.xcarchive \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" 2>&1 \
             | tee build-device.log | grep -E "(error|warning):|\*\* " || true
-          grep -q "\*\* ARCHIVE SUCCEEDED \*\*" build-device.log
+          if ! grep -q "\*\* ARCHIVE SUCCEEDED \*\*" build-device.log; then
+            grep -E -A3 "error:" build-device.log | head -200; tail -40 build-device.log; exit 1
+          fi
           mkdir -p Payload && cp -R build/EGOFocus.xcarchive/Products/Applications/EGOFocus.app Payload/
           zip -qry EGOFocus-UNSIGNED-not-installable.ipa Payload
           /usr/libexec/PlistBuddy -c Print build/EGOFocus.xcarchive/Products/Applications/EGOFocus.app/Info.plist > built-Info.plist.txt
@@ -119,6 +130,27 @@ jobs:
             EGOFocus-Simulator.app.zip
             EGOFocus-UNSIGNED-not-installable.ipa
           retention-days: 30
+
+      - name: Publish results to the ci-results branch
+        if: always()
+        run: |
+          OUT=/tmp/pub/run; mkdir -p "$OUT"
+          cd "$GITHUB_WORKSPACE"
+          cp xcode-version.txt built-Info.plist.txt "$OUT"/ 2>/dev/null || true
+          for f in build-sim build-device unit-tests ui-tests; do
+            [ -f "$f.log" ] || continue
+            grep -E "error:|warning:|\*\* |Test Case|Test Suite|Executed|XCTAssert|failed" "$f.log" | grep -v "^    " | head -3000 > "$OUT/$f.summary.txt" || true
+            tail -200 "$f.log" > "$OUT/$f.tail.txt"
+          done
+          cp results/*.json "$OUT"/ 2>/dev/null || true
+          cp -R screenshots "$OUT"/ 2>/dev/null || true
+          for d in results/*-attachments; do [ -d "$d" ] && cp -R "$d" "$OUT"/; done
+          cp EGOFocus-Simulator.app.zip EGOFocus-UNSIGNED-not-installable.ipa "$OUT"/ 2>/dev/null || true
+          echo "sha=${GITHUB_SHA} run=${GITHUB_RUN_ID} unit=${{ steps.unit.outcome }} ui=${{ steps.ui.outcome }}" > "$OUT/STATUS.txt"
+          cd /tmp/pub && git init -q && git checkout -q -b ci-results
+          git -c user.name=ci -c user.email=ci@localhost add -A
+          git -c user.name=ci -c user.email=ci@localhost commit -qm "CI results for ${GITHUB_SHA}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-results
 
       - name: Fail if tests failed
         if: steps.unit.outcome != 'success' || steps.ui.outcome != 'success'

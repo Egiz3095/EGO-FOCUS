@@ -423,7 +423,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = gnu++20;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -447,7 +447,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = -Onone;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -458,12 +458,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = gnu++20;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -492,7 +492,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EGOFocus/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "EGO FOCUS";
-				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "يستخدم إيجو فوكس الميكروفون فقط عند ضغطك زر الإملاء لتحويل كلامك إلى مهمة.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "يستخدم إيجو فوكس التعرف على الكلام من Apple لتحويل المهام التي تمليها بالعربية إلى نص تراجعه قبل الحفظ.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -528,7 +528,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EGOFocus/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "EGO FOCUS";
-				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "يستخدم إيجو فوكس الميكروفون فقط عند ضغطك زر الإملاء لتحويل كلامك إلى مهمة.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "يستخدم إيجو فوكس التعرف على الكلام من Apple لتحويل المهام التي تمليها بالعربية إلى نص تراجعه قبل الحفظ.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
