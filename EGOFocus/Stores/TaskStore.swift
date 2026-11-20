@@ -126,6 +126,8 @@ final class TaskStore: ObservableObject {
     @Published private(set) var events: [CompletionEvent] = []
     @Published var lastError: String?
 
+    /// Retained so the context stays valid for the store's lifetime.
+    let container: ModelContainer
     let context: ModelContext
     let syncsNotifications: Bool
     var clock: () -> Date = { Date() }
@@ -133,6 +135,7 @@ final class TaskStore: ObservableObject {
     private var observer: NSObjectProtocol?
 
     init(container: ModelContainer, syncsNotifications: Bool = true) {
+        self.container = container
         self.context = container.mainContext
         self.syncsNotifications = syncsNotifications
         refresh()

@@ -9,6 +9,7 @@ struct AssistantView: View {
     @State private var parsed: ParsedTask?
     @State private var draft = TaskDraft(dueDate: .now)
     @State private var confirmed = false
+    @State private var analyzedCommand = ""
     @FocusState private var inputFocused: Bool
 
     private let examples = [
@@ -44,7 +45,7 @@ struct AssistantView: View {
                 }
             }
             .onChange(of: speech.transcript) { _, value in
-                if !value.isEmpty { command = value; parsed = nil }
+                if !value.isEmpty { command = value }
             }
             .onDisappear { speech.cancel() }
         }
@@ -60,7 +61,10 @@ struct AssistantView: View {
                 .padding(12)
                 .background(Brand.canvas, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .accessibilityIdentifier("assistant.input")
-                .onChange(of: command) { _, _ in if !speech.isRecording { parsed = nil } }
+                .onChange(of: command) { _, value in
+                    // Editing the command invalidates an older preview (not the one just produced).
+                    if !speech.isRecording && value != analyzedCommand { parsed = nil }
+                }
 
             HStack(spacing: 12) {
                 Button {
@@ -244,6 +248,7 @@ struct AssistantView: View {
         newDraft.recurrence = result.recurrence
         draft = newDraft
         confirmed = false
+        analyzedCommand = command
         withAnimation(.snappy) { parsed = result }
     }
 }

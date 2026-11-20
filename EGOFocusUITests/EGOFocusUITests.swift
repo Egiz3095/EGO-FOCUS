@@ -74,6 +74,8 @@ final class EGOFocusUITests: XCTestCase {
         // Delete
         element(app, containing: "Edited").tap()
         let delete = app.buttons["editor.delete"]
+        XCTAssertTrue(app.textFields["editor.title"].waitForExistence(timeout: 5))
+        for _ in 0..<6 where !delete.exists { app.swipeUp() }
         XCTAssertTrue(delete.waitForExistence(timeout: 5))
         delete.tap()
         let confirm = app.buttons["حذف نهائياً"]
@@ -113,7 +115,9 @@ final class EGOFocusUITests: XCTestCase {
         attachScreenshot("12-reports")
 
         app.tabBars.buttons["الإعدادات"].tap()
-        XCTAssertTrue(app.staticTexts["EGO FOCUS"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["الإعدادات"].waitForExistence(timeout: 5))
+        for _ in 0..<6 where !app.staticTexts["EGO FOCUS"].exists { app.swipeUp() }
+        XCTAssertTrue(app.staticTexts["EGO FOCUS"].waitForExistence(timeout: 5), "About section with app name")
         attachScreenshot("13-settings")
     }
 
@@ -134,6 +138,7 @@ final class EGOFocusUITests: XCTestCase {
 
         // Nothing is saved until the user confirms.
         let save = app.buttons["assistant.save"]
+        for _ in 0..<4 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled)
         save.tap()
         XCTAssertTrue(element(app, containing: "مراجعة الفواتير").waitForExistence(timeout: 5))
@@ -146,10 +151,12 @@ final class EGOFocusUITests: XCTestCase {
         XCTAssertTrue(example.waitForExistence(timeout: 5))
         example.tap()
         let save = app.buttons["assistant.save"]
+        XCTAssertTrue(app.textFields["assistant.previewTitle"].waitForExistence(timeout: 5))
+        for _ in 0..<4 where !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.waitForExistence(timeout: 5))
         XCTAssertFalse(save.isEnabled, "No time was given → save is blocked until the user confirms")
         let confirm = app.switches["assistant.confirm"]
-        XCTAssertTrue(confirm.exists)
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
         if confirm.switches.firstMatch.exists { confirm.switches.firstMatch.tap() } else { confirm.tap() }
         XCTAssertTrue(save.isEnabled)
     }

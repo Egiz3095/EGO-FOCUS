@@ -3,6 +3,10 @@
 set -euo pipefail
 UDID="$1"; APP="$2"; OUT="$3"
 BUNDLE=com.egofocus.tasks
+# Render the demo at ~10:00 local time regardless of when CI runs (TZ is passed to the app).
+UTC_HOUR=$(date -u +%H); OFFSET=$(( (10 - 10#$UTC_HOUR + 24) % 24 )); [ $OFFSET -gt 14 ] && OFFSET=$((OFFSET-24))
+if [ $OFFSET -ge 0 ]; then export SIMCTL_CHILD_TZ="Etc/GMT-$OFFSET"; else export SIMCTL_CHILD_TZ="Etc/GMT+$((-OFFSET))"; fi
+echo "screenshot timezone: $SIMCTL_CHILD_TZ"
 mkdir -p "$OUT"
 xcrun simctl install "$UDID" "$APP"
 xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100 || true

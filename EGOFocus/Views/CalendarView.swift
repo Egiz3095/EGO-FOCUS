@@ -111,9 +111,9 @@ struct CalendarView: View {
             VStack(spacing: 4) {
                 Text(AppFormat.dayNumber(date))
                     .font(.subheadline.weight(selected || isToday ? .bold : .regular).monospacedDigit())
-                    .foregroundStyle(selected ? Color.white : (isToday ? Brand.accent : Color.primary))
+                    .foregroundStyle(selected ? Brand.onAccent : (isToday ? Brand.accent : Color.primary))
                 Circle()
-                    .fill(indicator.map { selected ? Color.white : Brand.color(for: $0) } ?? Color.clear)
+                    .fill(indicator.map { selected ? Brand.onAccent : Brand.color(for: $0) } ?? Color.clear)
                     .frame(width: 5, height: 5)
             }
             .frame(maxWidth: .infinity)

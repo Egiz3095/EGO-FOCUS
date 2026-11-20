@@ -88,7 +88,7 @@ struct HomeView: View {
                 Button(action: onAssistant) {
                     Image(systemName: "mic.fill")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Brand.onAccent)
                         .frame(width: 34, height: 34)
                         .background(Brand.accent, in: Circle())
                 }

@@ -6,6 +6,8 @@ enum Brand {
     static let ink = Color("BrandInk")
     static let canvas = Color(uiColor: .systemGroupedBackground)
     static let card = Color(uiColor: .secondarySystemGroupedBackground)
+    /// Foreground on top of the accent: white in light mode, near-black in dark mode (contrast).
+    static let onAccent = Color(uiColor: .systemBackground)
     static let heroGradient = LinearGradient(
         colors: [Color(red: 0.06, green: 0.10, blue: 0.17), Color(red: 0.07, green: 0.29, blue: 0.32)],
         startPoint: .topTrailing, endPoint: .bottomLeading)
@@ -164,7 +166,7 @@ struct AddTaskButton: View {
         Button(action: action) {
             Image(systemName: "plus")
                 .font(.title2.weight(.bold))
-                .foregroundStyle(.white)
+                .foregroundStyle(Brand.onAccent)
                 .frame(width: 58, height: 58)
                 .background(Brand.accent, in: Circle())
                 .shadow(color: Brand.accent.opacity(0.35), radius: 12, y: 6)
