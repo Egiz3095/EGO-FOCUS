@@ -54,6 +54,18 @@ jobs:
             grep -E -A3 "error:" build-sim.log | head -200; tail -40 build-sim.log; exit 1
           fi
 
+      - name: UI tests (also grants notification permission via the system alert)
+        id: ui
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild test-without-building \
+            -project EGOFocus.xcodeproj -scheme EGOFocus \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath DerivedData -only-testing:EGOFocusUITests \
+            -resultBundlePath results/UITests.xcresult 2>&1 | tee ui-tests.log | grep -E "Test Case|error:|\*\* " || true
+          grep -q "\*\* TEST EXECUTE SUCCEEDED \*\*" ui-tests.log
+
       - name: Unit tests
         id: unit
         continue-on-error: true
@@ -65,18 +77,6 @@ jobs:
             -derivedDataPath DerivedData -only-testing:EGOFocusTests \
             -resultBundlePath results/UnitTests.xcresult 2>&1 | tee unit-tests.log | grep -E "Test Case|error:|\*\* " || true
           grep -q "\*\* TEST EXECUTE SUCCEEDED \*\*" unit-tests.log
-
-      - name: UI tests
-        id: ui
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          xcodebuild test-without-building \
-            -project EGOFocus.xcodeproj -scheme EGOFocus \
-            -destination "id=${{ steps.sim.outputs.udid }}" \
-            -derivedDataPath DerivedData -only-testing:EGOFocusUITests \
-            -resultBundlePath results/UITests.xcresult 2>&1 | tee ui-tests.log | grep -E "Test Case|error:|\*\* " || true
-          grep -q "\*\* TEST EXECUTE SUCCEEDED \*\*" ui-tests.log
 
       - name: Test summaries
         if: always()
