@@ -23,13 +23,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check secrets
+      - name: Check token and find the account
         run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::error::Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in Settings → Secrets and variables → Actions"
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Add the CLOUDFLARE_API_TOKEN secret in Settings → Secrets and variables → Actions"
             exit 1
           fi
           curl -sf -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" https://api.cloudflare.com/client/v4/user/tokens/verify | jq -r '.result.status'
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            ACC=$(curl -sf -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts?per_page=5" | jq -r '.result[0].id')
+            [ -n "$ACC" ] && [ "$ACC" != "null" ] || { echo "::error::Could not read the account id"; exit 1; }
+            echo "::add-mask::$ACC"
+            echo "CLOUDFLARE_ACCOUNT_ID=$ACC" >> "$GITHUB_ENV"
+          fi
 
       - uses: actions/setup-node@v4
         with:
