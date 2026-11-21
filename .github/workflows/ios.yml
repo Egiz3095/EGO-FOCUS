@@ -3,6 +3,7 @@ name: iOS build, test & package
 on:
   push:
     branches-ignore: [ci-results]
+    paths-ignore: ['web/**', 'docs/**', '*.md']
   workflow_dispatch:
     inputs:
       signed_export:
