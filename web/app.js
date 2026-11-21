@@ -56,7 +56,8 @@
   const fromLocalInput = s => { const d = new Date(s); return isNaN(d) ? null : d; };
 
   // ---------- Store ----------
-  const defaults = { tasks: [], events: [], fired: [], settings: { appearance: 'system', remindersEnabled: true, defaultReminder: 0, briefEnabled: false, briefTime: '08:00', lastBrief: '' } };
+  const defaults = { tasks: [], events: [], fired: [], settings: { appearance: 'system', remindersEnabled: true, defaultReminder: 0, briefEnabled: false, briefTime: '08:00', lastBrief: '',
+    deviceId: '', pushEnabled: false, pushShowTitles: true } };
   let db;
   function load() {
     try { db = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { db = null; }
@@ -135,7 +136,7 @@
       return { s, e, completed, pending, overdue, total, rate: total ? completed / total : 0 };
     }
   };
-  function persist() { save(); render(); }
+  function persist() { save(); render(); Push.sync(); }
 
   // ---------- Reminders (while the app is open) ----------
   function plannedReminders() {
@@ -149,8 +150,9 @@
     }
     return out;
   }
-  async function notify(title, body) {
+  async function notify(title, body, toastOnly) {
     toast(body);
+    if (toastOnly) return; // the server push delivers the system notification
     try {
       if ('Notification' in window && Notification.permission === 'granted') {
         const reg = await navigator.serviceWorker?.getRegistration();
@@ -165,11 +167,7 @@
     for (const r of plannedReminders()) {
       if (r.fire <= n && r.fire >= windowStart && !db.fired.includes(r.id)) {
         db.fired.push(r.id); changed = true;
-        const span = { 15: '15 دقيقة', 30: '30 دقيقة', 60: 'ساعة' }[r.offset] || (r.offset + ' دقيقة');
-        const body = r.offset === 0 ? 'حان الآن موعد: ' + r.t.title
-          : r.offset === 1440 ? 'غداً الساعة ' + F.time(r.occ) + ': ' + r.t.title
-          : 'بعد ' + span + ' (' + F.time(r.occ) + '): ' + r.t.title;
-        notify('EGO FOCUS', body);
+        notify('EGO FOCUS', reminderText(r.t, r.offset, r.occ), db.settings.pushEnabled);
       }
     }
     const s = db.settings;
@@ -178,11 +176,75 @@
       if (n >= at && n - at < 30 * 60000 && s.lastBrief !== key) {
         s.lastBrief = key; changed = true;
         const c = S.todayOpen().length + S.overdue().length;
-        notify('صباحك منظّم مع EGO FOCUS', c ? `لديك ${c} مهمة تنتظرك اليوم. ركّز على ما يهمك.` : 'لا مهام متبقية اليوم. ركّز على ما يهمك.');
+        if (!db.settings.pushEnabled) notify('صباحك منظّم مع EGO FOCUS', c ? `لديك ${c} مهمة تنتظرك اليوم. ركّز على ما يهمك.` : 'لا مهام متبقية اليوم. ركّز على ما يهمك.');
       }
     }
     if (db.fired.length > 400) { db.fired = db.fired.slice(-200); changed = true; }
     if (changed) save();
+  }
+
+  // ---------- Server push (reminders while the app is closed) ----------
+  const Push = {
+    url: () => (window.EGO_PUSH_URL || '').replace(/\/$/, ''),
+    available: () => !!(Push.url() && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window),
+    deviceId() { if (!db.settings.deviceId) { db.settings.deviceId = uid(); save(); } return db.settings.deviceId; },
+    async post(path, body) {
+      const r = await fetch(Push.url() + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({ deviceId: Push.deviceId() }, body)) });
+      if (!r.ok) throw new Error('HTTP ' + r.status); return r.json();
+    },
+    async enable() {
+      const perm = await Notification.requestPermission(); // must run directly from the tap
+      if (perm !== 'granted') { toast('لم يتم السماح بالإشعارات. فعّلها من إعدادات الآيفون ← الإشعارات ← EGO FOCUS.'); render(); return; }
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const { publicKey } = await (await fetch(Push.url() + '/vapid')).json();
+        const key = Uint8Array.from(atob(publicKey.replace(/-/g, '+').replace(/_/g, '/') + '==='.slice((publicKey.length + 3) % 4)), c => c.charCodeAt(0));
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+        await Push.post('/subscribe', { subscription: sub.toJSON() });
+        db.settings.pushEnabled = true; save(); await Push.sync(true); render();
+        toast('تم التفعيل: ستصلك التذكيرات حتى والتطبيق مغلق.');
+      } catch (e) { toast('تعذر تفعيل الإشعارات: ' + e.message); render(); }
+    },
+    async disable() {
+      db.settings.pushEnabled = false; save(); render();
+      try { await Push.post('/unsubscribe', {}); const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription(); await sub?.unsubscribe(); } catch (e) { /* offline: server drops it later */ }
+    },
+    reminders() {
+      const n = now(), horizon = D.addDays(n, 30), out = [], s = db.settings;
+      if (s.remindersEnabled) for (const t of db.tasks) {
+        if (t.completed || !t.offsets.length) continue;
+        let occ = due(t); if (t.recurrence !== 'none' && occ <= n) occ = Recurrence.nextOccurrence(occ, n, t.recurrence, t.anchorDay);
+        for (let k = 0; k < 40 && occ <= horizon; k++) {
+          for (const o of t.offsets) {
+            const at = D.addMinutes(occ, -o);
+            if (at > n) out.push({ id: `${t.id}|${o}|${occ.getTime()}`, at: at.getTime(), title: 'EGO FOCUS', body: s.pushShowTitles ? reminderText(t, o, occ) : 'لديك تذكير بمهمة — افتح EGO FOCUS' });
+          }
+          if (t.recurrence === 'none') break;
+          occ = Recurrence.next(occ, t.recurrence, t.anchorDay);
+        }
+      }
+      if (s.briefEnabled) {
+        const [h, m] = s.briefTime.split(':').map(Number);
+        for (let i = 0; i < 14; i++) {
+          const at = D.atTime(D.addDays(n, i), h, m); if (at <= n) continue;
+          const c = S.itemsOn(at).filter(x => !x.t.completed).length;
+          out.push({ id: 'brief|' + at.getTime(), at: at.getTime(), title: 'صباحك منظّم مع EGO FOCUS', body: c ? `لديك ${c} مهمة اليوم. ركّز على ما يهمك.` : 'ركّز على ما يهمك. افتح التطبيق لتخطيط يومك.' });
+        }
+      }
+      return out.sort((a, b) => a.at - b.at).slice(0, 300);
+    },
+    _timer: null,
+    sync(immediate) {
+      if (!db.settings.pushEnabled || !Push.available()) return Promise.resolve();
+      clearTimeout(Push._timer);
+      return new Promise(res => { Push._timer = setTimeout(() => Push.post('/sync', { reminders: Push.reminders() }).catch(() => {}).finally(res), immediate ? 0 : 1200); });
+    },
+    async test() { try { const r = await Push.post('/test', {}); toast(r.ok ? 'أُرسل تنبيه من الخادم — اقفل التطبيق وانتظر ثوانٍ.' : 'لم يُقبل التنبيه (رمز ' + r.status + ').'); } catch (e) { toast('تعذر الاتصال بالخادم.'); } }
+  };
+  function reminderText(t, o, occ) {
+    const span = { 15: '15 دقيقة', 30: '30 دقيقة', 60: 'ساعة' }[o] || (o + ' دقيقة');
+    return o === 0 ? 'حان الآن موعد: ' + t.title : o === 1440 ? 'غداً الساعة ' + F.time(occ) + ': ' + t.title : 'بعد ' + span + ' (' + F.time(occ) + '): ' + t.title;
   }
 
   // ---------- UI state ----------
@@ -306,8 +368,9 @@
         ${perm === 'default' ? `<button class="item btn" data-act="askNotif">${icon('bell')} السماح بالإشعارات</button>` : ''}
         <label class="item"><span>تذكيرات المهام</span><span class="switch"><input type="checkbox" data-set="remindersEnabled" ${s.remindersEnabled ? 'checked' : ''}><span></span></span></label>
         <div class="item"><span>التذكير الافتراضي</span><select data-set="defaultReminder">${[[-1, 'بدون تذكير'], ...ALLOWED_OFFSETS.map(o => [o, reminderLabel(o)])].map(o => `<option value="${o[0]}" ${+s.defaultReminder === o[0] ? 'selected' : ''}>${o[1]}</option>`).join('')}</select></div>
-        <button class="item btn" data-act="testNotif">${icon('bell')} تجربة تنبيه</button></div>
-      <div class="group-foot">مهم: نسخة الويب تنبّهك <b>والتطبيق مفتوح فقط</b> (وتلحق بالتنبيهات الفائتة خلال آخر 10 دقائق عند فتحه). التذكير والتطبيق مغلق يحتاج نسخة الآيفون الأصلية أو خادماً، وهذه النسخة بلا خادم.</div>
+        <button class="item btn" data-act="testNotif">${icon('bell')} تجربة تنبيه داخل التطبيق</button></div>
+      <div class="group-title">التذكير والتطبيق مغلق</div><div class="group">${pushSection()}</div>
+      <div class="group-foot">${s.pushEnabled ? 'يرسل خادم EGO FOCUS على Cloudflare التذكير في موعده عبر خدمة إشعارات Apple. يُحفظ على الخادم موعد كل تذكير' + (s.pushShowTitles ? ' ونصّه' : ' فقط، بدون أسماء المهام') + '. التوقيت يعتمد على Apple وقد يتأخر قليلاً.' : 'بدون التفعيل تظهر التنبيهات والتطبيق مفتوح فقط.'}</div>
       <div class="group-title">التذكير الصباحي</div><div class="group">
         <label class="item"><span>الملخص الصباحي اليومي</span><span class="switch"><input type="checkbox" data-set="briefEnabled" ${s.briefEnabled ? 'checked' : ''}><span></span></span></label>
         ${s.briefEnabled ? `<div class="item"><span>الوقت</span><input type="time" data-set="briefTime" value="${s.briefTime}"></div>` : ''}</div>
@@ -322,6 +385,18 @@
       <div class="group-title">حول التطبيق</div><div class="group"><div class="item about"><img src="icons/icon-180.png" alt=""><div><b>EGO FOCUS</b><div class="subtle">إيجو فوكس</div><div class="slogan">ركّز على ما يهمك.</div></div></div>
         <div class="item"><span>الإصدار</span><span class="val">1.1 (ويب)</span></div></div>
       <input type="file" id="importFile" accept="application/json,.json" hidden></div>`;
+  }
+
+  function pushSection() {
+    const s = db.settings;
+    if (!Push.url()) return '<div class="item"><span class="subtle">خادم الإشعارات لم يُفعَّل بعد.</span></div>';
+    if (!isStandalone()) return `<div class="item"><span class="subtle">${icon('share')} ثبّت التطبيق على الشاشة الرئيسية أولاً من Safari، ثم افتحه من الأيقونة.</span></div>`;
+    if (!Push.available()) return '<div class="item"><span class="subtle">يحتاج iOS 16.4 أو أحدث.</span></div>';
+    if (!s.pushEnabled) return `<button class="item btn" data-act="pushOn">${icon('bell')} تفعيل الإشعارات والتطبيق مغلق</button>`;
+    return `<div class="item"><span>الحالة</span><span class="val" style="color:var(--accent)">مفعّلة ✓</span></div>
+      <label class="item"><span>إظهار اسم المهمة في الإشعار</span><span class="switch"><input type="checkbox" data-set="pushShowTitles" ${s.pushShowTitles ? 'checked' : ''}><span></span></span></label>
+      <button class="item btn" data-act="pushTest">${icon('bell')} إرسال تنبيه تجريبي من الخادم</button>
+      <button class="item btn red" data-act="pushOff">إيقاف الإشعارات والتطبيق مغلق</button>`;
   }
 
   // ---------- Sheets ----------
@@ -490,6 +565,9 @@
       case 'theme': db.settings.appearance = el.dataset.v; save(); render(); break;
       case 'askNotif': if ('Notification' in window) Notification.requestPermission().then(() => render()); break;
       case 'testNotif': notify('EGO FOCUS', 'هذا تنبيه تجريبي — التنبيهات تعمل.'); break;
+      case 'pushOn': Push.enable(); break;
+      case 'pushOff': Push.disable(); break;
+      case 'pushTest': Push.test(); break;
       case 'export': exportData(); break;
       case 'import': document.getElementById('importFile')?.click(); break;
       case 'prio': ui.editDraft.priority = el.dataset.v; render(); break;
@@ -541,8 +619,8 @@
     if (el.dataset.set) {
       const k = el.dataset.set, s = db.settings;
       s[k] = el.type === 'checkbox' ? el.checked : (k === 'defaultReminder' ? +el.value : el.value);
-      save(); render();
-      if (k === 'remindersEnabled' && el.checked) maybeAskNotifications({ offsets: [0] });
+      save(); render(); Push.sync();
+      if (k === 'remindersEnabled' && el.checked && !s.pushEnabled) maybeAskNotifications({ offsets: [0] });
       return;
     }
     if (el.id === 'importFile') { importData(el.files[0]); el.value = ''; return; }
@@ -599,7 +677,8 @@
   render();
   checkReminders();
   setInterval(checkReminders, 20000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { render(); checkReminders(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { render(); checkReminders(); Push.sync(); } });
+  Push.sync();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 })();
