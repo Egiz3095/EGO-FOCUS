@@ -36,6 +36,12 @@
     bulb: '<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>', drive: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 15h.01M11 15h6"/>'
   };
   const icon = (n) => '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + (P[n] || '') + '</svg>';
+  const ART = {
+    sun: '<svg class="art" viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="46" r="26" fill="var(--gold-soft)"/><circle cx="60" cy="46" r="14" fill="var(--gold)"/><path d="M60 8v8M60 76v8M22 46h8M90 46h8M33 19l6 6M81 67l6 6M33 73l6-6M81 25l6-6" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/></svg>',
+    cal: '<svg class="art" viewBox="0 0 120 90" aria-hidden="true"><rect x="26" y="18" width="68" height="58" rx="14" fill="var(--primary-soft)"/><rect x="26" y="18" width="68" height="16" rx="8" fill="var(--primary)"/><circle cx="46" cy="52" r="5" fill="var(--primary)"/><circle cx="60" cy="52" r="5" fill="var(--gold)"/><circle cx="74" cy="52" r="5" fill="var(--primary-soft)" stroke="var(--primary)" stroke-width="2"/></svg>',
+    done: '<svg class="art" viewBox="0 0 120 90" aria-hidden="true"><circle cx="60" cy="45" r="32" fill="var(--primary-soft)"/><circle cx="60" cy="45" r="20" fill="var(--primary)"/><path d="M51 45l6 6 12-13" stroke="var(--on-primary)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="96" cy="22" r="4" fill="var(--gold)"/><circle cx="24" cy="66" r="3" fill="var(--coral)"/></svg>',
+    list: '<svg class="art" viewBox="0 0 120 90" aria-hidden="true"><rect x="22" y="18" width="76" height="16" rx="8" fill="var(--primary-soft)"/><rect x="22" y="40" width="76" height="16" rx="8" fill="var(--gold-soft)"/><rect x="22" y="62" width="50" height="12" rx="6" fill="var(--primary-soft)"/><circle cx="34" cy="26" r="4" fill="var(--primary)"/><circle cx="34" cy="48" r="4" fill="var(--gold)"/></svg>'
+  };
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   // ---------- Formatting ----------
@@ -111,7 +117,11 @@
       }
       t.updatedAt = n.toISOString(); persist();
     },
-    remove(t) { db.tasks = db.tasks.filter(x => x !== t); db.events = db.events.filter(e => e.taskId !== t.id); persist(); },
+    remove(t) {
+      const idx = db.tasks.indexOf(t), events = db.events.filter(e => e.taskId === t.id);
+      db.tasks = db.tasks.filter(x => x !== t); db.events = db.events.filter(e => e.taskId !== t.id); persist();
+      undoBar('حُذفت «' + t.title + '»', () => { db.tasks.splice(Math.min(idx, db.tasks.length), 0, t); db.events.push(...events); persist(); });
+    },
     itemsOn(day) {
       const out = [];
       for (const t of db.tasks) {
@@ -137,6 +147,12 @@
     }
   };
   function persist() { save(); render(); Push.sync(); }
+  function streak() {
+    const days = new Set(db.events.map(e => D.startOfDay(new Date(e.completedAt)).getTime()));
+    let d = D.startOfDay(now()); if (!days.has(d.getTime())) d = D.addDays(d, -1);
+    let n = 0; while (days.has(d.getTime())) { n++; d = D.addDays(d, -1); }
+    return n;
+  }
 
   // ---------- Reminders (while the app is open) ----------
   function plannedReminders() {
@@ -256,7 +272,7 @@
     const a = db.settings.appearance;
     const dark = a === 'dark' || (a === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-    document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#000000' : '#f2f2f7');
+    document.querySelector('meta[name=theme-color]')?.setAttribute('content', dark ? '#0F1012' : '#F6F4EF');
   }
 
   // ---------- Components ----------
@@ -266,19 +282,21 @@
     const when = (opt.timeOnly || D.sameDay(d, n)) ? F.time(d) : F.dateTime(d);
     const cat = CATEGORIES.find(c => c[0] === t.category) || CATEGORIES[2];
     const badge = !t.completed && (t.priority === 'high' || t.priority === 'urgent') ? `<span class="badge">${label(PRIORITIES, t.priority)}</span>` : '';
-    return `<div class="task p-${t.priority} ${t.completed ? 'done' : ''}" data-act="edit" data-id="${t.id}">
+    const row = `<div class="task p-${t.priority} ${t.completed ? 'done' : ''}" data-act="edit" data-id="${t.id}">
       <button class="check" data-act="toggle" data-id="${t.id}" ${opt.proj ? 'disabled' : ''} aria-label="${t.completed ? 'إعادة فتح' : 'إكمال'} ${esc(t.title)}">${icon('check')}</button>
       <div class="body"><div class="title">${esc(t.title)}</div>
         ${t.details ? `<div class="details">${esc(t.details)}</div>` : ''}
         <div class="meta"><span class="${late ? 'late' : ''}">${icon(late ? 'alert' : 'clock')} ${when}</span><span>${icon(cat[2])} ${cat[1]}</span>
         ${t.recurrence !== 'none' ? `<span>${icon('repeat')} ${label(RECURRENCES, t.recurrence)}</span>` : ''}
         ${t.offsets.length && !t.completed ? `<span>${icon('bell')}</span>` : ''}</div></div>${badge}</div>`;
+    if (opt.proj) return `<div class="swipe">${row}</div>`;
+    return `<div class="swipe" data-swipe="${t.id}"><div class="swipe-bg"><span class="done">${icon('check')} ${t.completed ? 'إعادة فتح' : 'تم'}</span><span class="del">${icon('trash')} حذف</span></div>${row}</div>`;
   }
-  const empty = (ic, title, msg) => `<div class="empty"><div class="ic">${icon(ic)}</div><b>${title}</b><p>${msg}</p></div>`;
+  const empty = (art, title, msg) => `<div class="empty">${ART[art] || ART.list}<b>${title}</b><p>${msg}</p></div>`;
   const secHead = (title, count, cls = '') => `<div class="sec-head ${cls}"><h2>${title}</h2>${count != null ? `<span class="count">${count}</span>` : ''}</div>`;
-  function ring(v, size = 76, stroke = 8, color = '#6ed9b8', track = 'rgba(255,255,255,.2)') {
+  function ring(v, size = 84, stroke = 9, color = 'var(--gold)', track = 'var(--ring-track)') {
     const r = (100 - stroke) / 2, c = 2 * Math.PI * r;
-    return `<div class="ring" style="width:${size}px;height:${size}px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="${track}" stroke-width="${stroke}"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c * Math.min(Math.max(v, 0), 1)} ${c}"/></svg><div class="val">${F.pct(v)}</div></div>`;
+    return `<div class="ring" style="width:${size}px;height:${size}px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="${track}" stroke-width="${stroke}"/><circle class="prog" cx="50" cy="50" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c * Math.min(Math.max(v, 0), 1)} ${c}"/></svg><div class="val">${F.pct(v)}</div></div>`;
   }
   const isStandalone = () => window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
 
@@ -291,20 +309,21 @@
       <div class="home-head"><div><div class="date">${F.dayMonth(n)}</div><h1>${greet}</h1><div class="slogan">ركّز على ما يهمك.</div></div>
       <button class="circle-btn" data-act="all" aria-label="كل المهام">${icon('list')}</button></div>
       ${!isStandalone() ? `<div class="install">${icon('share')}<div>لتثبيت التطبيق على الآيفون: اضغط زر <b>المشاركة</b> في Safari ثم <b>«إضافة إلى الشاشة الرئيسية»</b>.</div></div>` : ''}
-      <form class="quick" data-form="quick"><span class="lead">${icon('plusc')}</span><input id="quickInput" placeholder="أضف مهمة سريعة…" autocomplete="off" enterkeyhint="done">
-        <button type="button" class="mic-btn" data-act="assistant" aria-label="المساعد الذكي">${icon('mic')}</button></form>
-      <div class="hero"><div style="flex:1"><div class="lbl">ملخص إنتاجيتك اليوم</div><div class="big">أنجزت ${st.completed} من ${st.total}</div>
-        <div class="pills"><div><b>${today.length}</b><span>متبقية اليوم</span></div><div><b>${over.length}</b><span>متأخرة</span></div><div><b>${up.length}</b><span>قادمة</span></div></div></div>${ring(st.rate)}</div>`;
+      <form class="quick" data-form="quick"><span class="lead">${icon('plusc')}</span><input id="quickInput" placeholder="مهمة جديدة… مثل: اجتماع بكرة 10 الصبح" autocomplete="off" enterkeyhint="done">
+        <button type="button" class="mic-btn" data-act="assistant" aria-label="المساعد الذكي">${icon('mic')}</button></form><div id="quickHint"></div>
+      <div class="hero"><div style="flex:1;position:relative;z-index:1"><div class="lbl">إنتاجيتك اليوم</div><div class="big">أنجزت <b class="num">${st.completed}</b> من <span class="num">${st.total}</span></div>
+        <div class="pills"><div><b class="num">${today.length}</b><span>متبقية</span></div><div><b class="num">${over.length}</b><span>متأخرة</span></div><div><b class="num">${up.length}</b><span>قادمة</span></div></div>
+        ${streak() > 1 ? `<div class="streak">${icon('sun')} ${streak()} أيام متتالية من الإنجاز</div>` : ''}</div>${ring(st.rate)}</div>`;
     if (over.length) html += secHead('مهام متأخرة', over.length, 'red') + over.map(t => taskRow(t)).join('');
     html += secHead('مهام اليوم', today.length) + (today.length ? today.map(t => taskRow(t, { timeOnly: true })).join('')
-      : empty('sun', over.length ? 'لا مهام أخرى لليوم' : 'لا مهام متبقية لليوم', 'أضف مهمة جديدة أو استخدم المساعد لتنظيم يومك.'));
+      : empty(st.completed ? 'done' : 'sun', st.completed ? 'أنهيت مهام اليوم' : 'يومك صفحة بيضاء', st.completed ? 'إنجاز رائع. استمتع بباقي يومك أو خطّط للغد.' : 'اكتب أول مهمة في الأعلى أو قلها بصوتك.'));
     html += secHead('المهام القادمة', up.length) + (up.length ? up.slice(0, 6).map(t => taskRow(t)).join('') + (up.length > 6 ? `<button class="link-btn" data-act="all">عرض كل المهام القادمة (${up.length})</button>` : '')
-      : empty('calendar', 'لا مهام قادمة', 'جدولك القادم فارغ. خطّط لأسبوعك من التقويم.'));
+      : empty('cal', 'لا مهام قادمة', 'جدولك القادم فارغ. خطّط لأسبوعك من التقويم.'));
     if (done.length) {
       html += secHead('المهام المكتملة', done.length) + done.slice(0, ui.showAllDone ? 30 : 3).map(t => taskRow(t)).join('');
       if (done.length > 3) html += `<button class="link-btn" data-act="moreDone">${ui.showAllDone ? 'عرض أقل' : 'عرض المزيد'}</button>`;
     }
-    return html + '</div>' + `<button class="fab" data-act="new" aria-label="إضافة مهمة">${icon('plus')}</button>`;
+    return html + '</div>' + `<button class="fab" data-act="quickAdd" aria-label="إضافة مهمة">${icon('plus')}</button>`;
   }
 
   function viewCalendar() {
@@ -326,8 +345,8 @@
       <div class="card" style="padding:12px" id="calGrid"><div class="grid7">${wds.map(x => `<div class="wd">${x}</div>`).join('')}${cells}</div></div>
       ${secHead(isToday ? 'مهام اليوم' : F.dayMonth(ui.calSel), items.length)}
       ${items.length ? items.map(x => taskRow(x.t, { date: x.date, proj: x.proj, timeOnly: true })).join('') + (items.some(x => x.proj) ? `<div class="subtle small">${icon('repeat')} المهام المتكررة تظهر في مواعيدها القادمة؛ يمكن إنجاز الموعد الحالي فقط.</div>` : '')
-        : empty('calendar', 'لا توجد مهام في هذا اليوم', 'اضغط + لإضافة مهمة في ' + F.dayMonth(ui.calSel) + '.')}
-      </div><button class="fab" data-act="newOnDay" aria-label="إضافة مهمة">${icon('plus')}</button>`;
+        : empty('cal', 'يوم بلا مهام', 'اضغط + لإضافة مهمة في ' + F.dayMonth(ui.calSel) + '.')}
+      </div><button class="fab" data-act="quickAddDay" aria-label="إضافة مهمة">${icon('plus')}</button>`;
   }
 
   function viewReports() {
@@ -339,18 +358,17 @@
     const cats = {}; db.events.forEach(x => { const d = new Date(x.completedAt); if (d >= s && d < e) cats[x.category] = (cats[x.category] || 0) + 1; });
     const catRows = CATEGORIES.filter(c => cats[c[0]]).sort((a, b) => cats[b[0]] - cats[a[0]]); const cmax = Math.max(1, ...Object.values(cats));
     const total = db.events.length + S.pending().length;
-    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0d8571';
     return `<div class="view"><div class="large-title">التقارير</div>
       <div class="seg">${[['day', 'اليوم'], ['week', 'الأسبوع'], ['month', 'الشهر']].map(p => `<button class="${ui.period === p[0] ? 'on' : ''}" data-act="period" data-p="${p[0]}">${p[1]}</button>`).join('')}</div>
       <p class="subtle small" style="margin:10px 2px">${range}</p>
-      <div class="card row" style="gap:18px">${ring(st.rate, 92, 10, accent, 'color-mix(in srgb, ' + accent + ' 18%, transparent)')}
+      <div class="card row" style="gap:18px">${ring(st.rate, 92, 10, 'var(--primary)', 'var(--primary-soft)')}
         <div><b style="font-size:17px">نسبة الإنجاز</b><div class="subtle small">${st.total ? `أنجزت ${st.completed} من أصل ${st.total} مهمة مستحقة أو منجزة خلال ${pname}.` : 'لا توجد مهام مستحقة أو منجزة في هذه الفترة.'}</div></div></div>
       <div class="tiles">
-        <div class="card tile" style="--tc:var(--accent)"><div class="ic">${icon('check')}</div><b>${st.completed}</b><span>مهام مكتملة</span></div>
+        <div class="card tile" style="--tc:var(--primary)"><div class="ic">${icon('check')}</div><b>${st.completed}</b><span>مهام مكتملة</span></div>
         <div class="card tile" style="--tc:var(--blue)"><div class="ic">${icon('hour')}</div><b>${st.pending}</b><span>قيد الانتظار</span></div>
-        <div class="card tile" style="--tc:var(--red)"><div class="ic">${icon('alert')}</div><b>${st.overdue}</b><span>متأخرة</span></div>
-        <div class="card tile" style="--tc:var(--orange)"><div class="ic">${icon('list')}</div><b>${st.total}</b><span>إجمالي مهام الفترة</span></div></div>
-      ${ui.period !== 'day' ? `<div class="card" style="margin-top:12px"><b>الإنجاز اليومي</b><div class="bars">${days.map((d, i) => `<div class="b"><i style="height:${Math.round(counts[i] / max * 100)}%"></i><small>${ui.period === 'week' ? F.wdShort(d) : (i % 5 === 0 ? d.getDate() : '')}</small></div>`).join('')}</div></div>` : ''}
+        <div class="card tile" style="--tc:var(--coral)"><div class="ic">${icon('alert')}</div><b>${st.overdue}</b><span>متأخرة</span></div>
+        <div class="card tile" style="--tc:var(--gold)"><div class="ic">${icon('list')}</div><b>${st.total}</b><span>إجمالي مهام الفترة</span></div></div>
+      ${ui.period !== 'day' ? `<div class="card" style="margin-top:12px"><b>الإنجاز اليومي</b><div class="bars">${days.map((d, i) => `<div class="b"><i class="${counts[i] === max && max > 0 ? 'top' : ''}" style="height:${Math.round(counts[i] / max * 100)}%;animation-delay:${i * 30}ms"></i><small>${ui.period === 'week' ? F.wdShort(d) : (i % 5 === 0 ? d.getDate() : '')}</small></div>`).join('')}</div></div>` : ''}
       <div class="card" style="margin-top:12px"><b>الإنجاز حسب التصنيف</b>${catRows.length ? catRows.map(c => `<div class="hbar"><span class="name">${c[1]}</span><span class="track"><i style="width:${Math.max(6, cats[c[0]] / cmax * 100)}%"></i></span><b>${cats[c[0]]}</b></div>`).join('') : '<p class="subtle small">لم تُنجز مهام في هذه الفترة بعد.</p>'}</div>
       <div class="card" style="margin-top:12px"><b>نظرة عامة</b>
         <div class="kv"><span>كل المهام المسجلة</span><b>${db.tasks.length}</b></div><div class="kv"><span>المهام المفتوحة</span><b>${S.pending().length}</b></div>
@@ -393,7 +411,7 @@
     if (!isStandalone()) return `<div class="item"><span class="subtle">${icon('share')} ثبّت التطبيق على الشاشة الرئيسية أولاً من Safari، ثم افتحه من الأيقونة.</span></div>`;
     if (!Push.available()) return '<div class="item"><span class="subtle">يحتاج iOS 16.4 أو أحدث.</span></div>';
     if (!s.pushEnabled) return `<button class="item btn" data-act="pushOn">${icon('bell')} تفعيل الإشعارات والتطبيق مغلق</button>`;
-    return `<div class="item"><span>الحالة</span><span class="val" style="color:var(--accent)">مفعّلة ✓</span></div>
+    return `<div class="item"><span>الحالة</span><span class="val" style="color:var(--primary)">مفعّلة ✓</span></div>
       <label class="item"><span>إظهار اسم المهمة في الإشعار</span><span class="switch"><input type="checkbox" data-set="pushShowTitles" ${s.pushShowTitles ? 'checked' : ''}><span></span></span></label>
       <button class="item btn" data-act="pushTest">${icon('bell')} إرسال تنبيه تجريبي من الخادم</button>
       <button class="item btn red" data-act="pushOff">إيقاف الإشعارات والتطبيق مغلق</button>`;
@@ -426,13 +444,27 @@
     </div>`;
   }
 
+  function sheetQuick() {
+    const q = ui.quick, d = q.due, n = now();
+    const tomorrow = D.addDays(D.startOfDay(n), 1), nextWeek = D.addDays(D.startOfDay(n), 7);
+    const which = D.sameDay(d, n) ? 0 : D.sameDay(d, tomorrow) ? 1 : D.sameDay(d, nextWeek) ? 7 : -1;
+    return `<div class="qa"><div class="row"><h3 class="head" style="margin:6px 0 0;font-size:17px">مهمة جديدة</h3><span class="spacer"></span><button class="text-btn" data-act="close">إلغاء</button></div>
+      <input class="qa-input" id="qaTitle" placeholder="ماذا تريد أن تنجز؟" value="${esc(q.title)}" autocomplete="off" enterkeyhint="done">
+      <div id="qaHint">${q.hint || ''}</div>
+      <div class="qa-row">${[[0, 'اليوم'], [1, 'غداً'], [7, 'الأسبوع القادم']].map(o => `<button class="chip ${which === o[0] ? 'on' : ''}" data-act="qaDay" data-d="${o[0]}">${o[1]}</button>`).join('')}
+        <input type="datetime-local" class="qa-date" data-q="due" value="${toLocalInput(d)}" aria-label="التاريخ والوقت"></div>
+      <div class="qa-row"><span class="subtle small">الأولوية</span>${PRIORITIES.map(p => `<button class="pdot p-${p[0]} ${q.priority === p[0] ? 'on' : ''}" data-act="qaPrio" data-v="${p[0]}" aria-label="${p[1]}"><i></i></button>`).join('')}
+        <span class="spacer"></span><button class="chip ${q.remind ? 'on' : ''}" data-act="qaRemind">${icon('bell')} ${q.remind ? 'تذكير' : 'بدون تذكير'}</button></div>
+      <div class="qa-actions"><button class="btn-ghost" data-act="qaMore">تفاصيل أكثر</button><button class="btn-main" data-act="qaSave" id="qaSave" ${q.title.trim() ? '' : 'disabled'}>${icon('plus')} إضافة</button></div></div>`;
+  }
+
   function sheetAll() {
     const base = ui.filter === 'open' ? S.pending() : ui.filter === 'done' ? S.completed() : [...S.pending(), ...S.completed()];
     const q = ui.search.trim(), items = q ? base.filter(t => [t.title, t.details, t.notes].some(x => (x || '').includes(q))) : base;
     return `<div class="sheet-bar"><button data-act="close">إغلاق</button><h3>كل المهام</h3><span style="min-width:56px"></span></div><div class="sheet-body">
       <input class="search" type="search" placeholder="ابحث في المهام" value="${esc(ui.search)}" data-act-input="search">
       <div class="seg" style="margin-bottom:12px">${[['open', 'قيد التنفيذ'], ['done', 'المكتملة'], ['all', 'الكل']].map(f => `<button class="${ui.filter === f[0] ? 'on' : ''}" data-act="filter" data-v="${f[0]}">${f[1]}</button>`).join('')}</div>
-      <div id="allList">${items.length ? items.map(t => taskRow(t)).join('') : empty('list', 'لا توجد مهام', 'لا توجد مهام مطابقة.')}</div></div>`;
+      <div id="allList">${items.length ? items.map(t => taskRow(t)).join('') : empty('list', 'لا توجد مهام', 'جرّب كلمة أخرى أو غيّر التصفية.')}</div></div>`;
   }
 
   function sheetPrivacy() {
@@ -452,7 +484,7 @@
     if (r) {
       const canSave = a.draft.title.trim() && (!r.needsClarification || a.confirmed);
       preview = `<div class="card stack" style="margin-top:12px">
-        <div class="row"><b style="font-size:17px">معاينة المهمة</b><span class="spacer"></span><span class="small" style="color:${r.needsClarification ? 'var(--orange)' : 'var(--accent)'};font-weight:700">${r.needsClarification ? 'تحتاج تأكيد' : 'مفهومة ✓'}</span></div>
+        <div class="row"><b style="font-size:17px">معاينة المهمة</b><span class="spacer"></span><span class="small" style="color:${r.needsClarification ? 'var(--gold)' : 'var(--primary)'};font-weight:700">${r.needsClarification ? 'تحتاج تأكيد' : 'مفهومة ✓'}</span></div>
         ${r.issues.length ? `<div class="warn">${r.issues.map(x => `<div>⚠︎ ${esc(x)}</div>`).join('')}</div>` : ''}
         <div><div class="field-lbl">العنوان</div><input class="field" data-af="title" value="${esc(a.draft.title)}"></div>
         <div class="prev-row"><span>الموعد</span><input type="datetime-local" data-af="due" value="${toLocalInput(a.draft.due)}"></div>
@@ -483,19 +515,46 @@
     const tabs = [['home', 'الرئيسية', 'home'], ['calendar', 'التقويم', 'calendar'], ['reports', 'التقارير', 'chart'], ['settings', 'الإعدادات', 'gear']];
     let html = views[ui.tab]() + `<nav class="tabbar">${tabs.map(t => `<button class="${ui.tab === t[0] ? 'on' : ''}" data-act="tab" data-v="${t[0]}">${icon(t[2])}<span>${t[1]}</span></button>`).join('')}</nav>`;
     if (ui.sheet) {
-      const sheets = { editor: sheetEditor, all: sheetAll, privacy: sheetPrivacy, assistant: sheetAssistant };
+      const sheets = { editor: sheetEditor, all: sheetAll, privacy: sheetPrivacy, assistant: sheetAssistant, quick: sheetQuick };
       const prevScroll = document.querySelector('.sheet-body')?.scrollTop || 0;
-      html += `<div class="sheet-back" data-act="close"></div><div class="sheet" role="dialog">${sheets[ui.sheet]()}</div>`;
+      html += `<div class="sheet-back" data-act="close"></div><div class="sheet ${ui.sheet === 'quick' ? 'mini' : ''}" role="dialog">${sheets[ui.sheet]()}</div>`;
       $app().innerHTML = html;
       const sb = document.querySelector('.sheet-body'); if (sb) sb.scrollTop = prevScroll;
+      if (ui.sheet === 'quick' && ui.quick.focus) { ui.quick.focus = false; const el = document.getElementById('qaTitle'); el && el.focus(); }
       document.body.style.overflow = 'hidden';
     } else {
       $app().innerHTML = html; document.body.style.overflow = '';
       window.scrollTo(0, scrollY);
     }
+    if (!db.settings.onboarded) { $app().insertAdjacentHTML('beforeend', onboarding()); document.body.style.overflow = 'hidden'; }
+  }
+
+  const ONB = [
+    ['done', 'ركّز على ما يهمك', 'كل مهامك ومواعيدك في مكان واحد، بتصميم هادئ يساعدك تنجز بدون تشتيت.'],
+    ['list', 'اكتب أو تكلّم بالعربي', 'اكتب «اجتماع بكرة 10 الصبح» وسيفهم EGO FOCUS الموعد ويجهّز المهمة لتراجعها.'],
+    ['cal', 'خاص بك تماماً', 'بياناتك تبقى على جهازك. ثبّت التطبيق على الشاشة الرئيسية لتصلك التذكيرات.']
+  ];
+  function onboarding() {
+    const i = ui.onb || 0, s = ONB[i];
+    return `<div class="onb" role="dialog" aria-label="مرحباً"><button class="skip" data-act="onbSkip">تخطي</button>
+      <div class="art">${ART[s[0]].replace('class="art" ', '')}</div><h2>${s[1]}</h2><p>${s[2]}</p>
+      <div class="dots">${ONB.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('')}</div>
+      <button class="btn-main wide" data-act="onbNext">${i < ONB.length - 1 ? 'التالي' : 'ابدأ الآن'}</button></div>`;
   }
   function openSheet(name) { ui.sheet = name; render(); }
   function closeSheet() { stopListening(); ui.sheet = null; ui.editId = null; render(); }
+
+  function parseQuick(text) {
+    const def = +db.settings.defaultReminder;
+    const r = parse(text, now(), def >= 0 ? [def] : []);
+    return r.dateDetected && r.timeDetected && r.title ? r : null;
+  }
+  function openQuick(day) {
+    let d = D.suggestedDue(now()); if (day) d = D.atTime(day, d.getHours(), d.getMinutes());
+    ui.quick = { title: '', due: d, priority: 'normal', remind: +db.settings.defaultReminder >= 0, hint: '', parsed: null, focus: true };
+    openSheet('quick');
+  }
+  function hintHtml(r) { return r ? `<div class="qhint">${icon('calendar')} سيُضاف في ${F.dateTime(r.date)}${r.recurrence !== 'none' ? ' · ' + label(RECURRENCES, r.recurrence) : ''}: <b>${esc(r.title)}</b></div>` : ''; }
 
   function openEditor(t, dayDefault) {
     ui.editId = t ? t.id : null;
@@ -509,6 +568,14 @@
     openSheet('editor');
   }
 
+  let undoTimer = null;
+  function undoBar(text, onUndo) {
+    document.querySelector('.undo')?.remove(); clearTimeout(undoTimer);
+    const el = document.createElement('div'); el.className = 'undo';
+    el.innerHTML = `<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(text)}</span><button>تراجع</button>`;
+    el.querySelector('button').onclick = () => { el.remove(); clearTimeout(undoTimer); onUndo(); };
+    document.body.appendChild(el); undoTimer = setTimeout(() => el.remove(), 5000);
+  }
   function toast(text) {
     document.querySelector('.toast')?.remove();
     const el = document.createElement('div'); el.className = 'toast';
@@ -547,7 +614,26 @@
     const act = el.dataset.act, id = el.dataset.id;
     switch (act) {
       case 'tab': ui.tab = el.dataset.v; window.scrollTo(0, 0); render(); break;
-      case 'toggle': e.stopPropagation(); { const t = S.get(id); if (t) S.toggle(t); } break;
+      case 'toggle': {
+        const t = S.get(id); if (!t) break;
+        const rowEl = el.closest('.task');
+        if (!t.completed && rowEl) { rowEl.classList.add('completing'); setTimeout(() => S.toggle(t), 280); } else S.toggle(t);
+      } break;
+      case 'quickAdd': openQuick(); break;
+      case 'quickAddDay': openQuick(ui.calSel); break;
+      case 'qaDay': { const q = ui.quick, day = D.addDays(D.startOfDay(now()), +el.dataset.d); q.due = D.atTime(day, q.due.getHours(), q.due.getMinutes()); q.parsed = null; q.hint = ''; render(); } break;
+      case 'qaPrio': ui.quick.priority = el.dataset.v; render(); break;
+      case 'qaRemind': ui.quick.remind = !ui.quick.remind; render(); break;
+      case 'qaMore': {
+        const q = ui.quick, def = +db.settings.defaultReminder, r = q.parsed;
+        ui.sheet = null; openEditor(null);
+        Object.assign(ui.editDraft, { title: r ? r.title : q.title, due: r ? r.date : q.due, priority: q.priority, recurrence: r ? r.recurrence : 'none',
+          offsets: q.remind ? (r ? r.reminderOffsets : [Math.max(def, 0)]) : [], remOn: q.remind });
+        render();
+      } break;
+      case 'qaSave': quickSave(); break;
+      case 'onbNext': if ((ui.onb || 0) < ONB.length - 1) { ui.onb = (ui.onb || 0) + 1; render(); } else { db.settings.onboarded = true; save(); render(); } break;
+      case 'onbSkip': db.settings.onboarded = true; save(); render(); break;
       case 'edit': { const t = S.get(id); if (t) openEditor(t); } break;
       case 'new': openEditor(null); break;
       case 'newOnDay': openEditor(null, ui.calSel); break;
@@ -581,7 +667,7 @@
         if (!t) maybeAskNotifications(draft);
       } break;
       case 'sheetToggle': { const t = S.get(ui.editId); if (t) { ui.sheet = null; S.toggle(t); ui.editId = null; } } break;
-      case 'delete': { const t = S.get(ui.editId); if (t && confirm('حذف هذه المهمة نهائياً؟ سيتم حذفها مع سجل إنجازها من هذا الجهاز.')) { ui.sheet = null; ui.editId = null; S.remove(t); } } break;
+      case 'delete': { const t = S.get(ui.editId); if (t) { ui.sheet = null; ui.editId = null; S.remove(t); } } break;
       case 'mic': ui.assistant.listening ? (stopListening(), render()) : startListening(); break;
       case 'analyze': analyze(); break;
       case 'example': ui.assistant.command = el.dataset.v; analyze(); break;
@@ -593,17 +679,32 @@
     }
   });
 
+  function quickSave() {
+    const q = ui.quick, r = q.parsed, def = +db.settings.defaultReminder;
+    if (!q.title.trim()) return;
+    ui.sheet = null;
+    S.add({ title: r ? r.title : q.title, due: r ? r.date : q.due, priority: q.priority, category: 'personal', recurrence: r ? r.recurrence : 'none',
+      offsets: q.remind ? (r ? r.reminderOffsets : [Math.max(def, 0)]) : [] });
+    maybeAskNotifications({ offsets: q.remind ? [0] : [] });
+  }
   document.addEventListener('submit', e => {
     if (e.target.dataset.form === 'quick') {
       e.preventDefault();
       const inp = document.getElementById('quickInput'), title = inp.value.trim(); if (!title) return;
-      const def = +db.settings.defaultReminder;
-      S.add({ title, due: D.suggestedDue(now()), offsets: def >= 0 ? [def] : [] });
+      const def = +db.settings.defaultReminder, r = parseQuick(title);
+      S.add(r ? { title: r.title, due: r.date, recurrence: r.recurrence, offsets: r.reminderOffsets } : { title, due: D.suggestedDue(now()), offsets: def >= 0 ? [def] : [] });
     }
   });
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'qaTitle') { e.preventDefault(); quickSave(); } });
 
   document.addEventListener('input', e => {
     const el = e.target;
+    if (el.id === 'quickInput') { const h = document.getElementById('quickHint'); if (h) h.innerHTML = el.value.trim().length > 3 ? hintHtml(parseQuick(el.value)) : ''; return; }
+    if (el.id === 'qaTitle') {
+      const q = ui.quick; q.title = el.value; q.parsed = el.value.trim().length > 3 ? parseQuick(el.value) : null; q.hint = hintHtml(q.parsed);
+      document.getElementById('qaHint').innerHTML = q.hint; document.getElementById('qaSave').disabled = !el.value.trim();
+      document.querySelector('.qa-row')?.classList.toggle('dim', !!q.parsed); return;
+    }
     if (el.id === 'cmd') { ui.assistant.command = el.value; const b = document.getElementById('analyzeBtn'); if (b) b.disabled = !el.value.trim(); if (ui.assistant.result) { ui.assistant.result = null; render(); document.getElementById('cmd')?.focus(); } return; }
     if (el.dataset.actInput === 'search') { ui.search = el.value; const list = document.getElementById('allList'); if (list) { const html = sheetAll(); const tmp = document.createElement('div'); tmp.innerHTML = html; list.innerHTML = tmp.querySelector('#allList').innerHTML; } return; }
     if (el.dataset.f && ui.editDraft) {
@@ -624,6 +725,7 @@
       return;
     }
     if (el.id === 'importFile') { importData(el.files[0]); el.value = ''; return; }
+    if (el.dataset.q === 'due' && ui.quick) { const v = fromLocalInput(el.value); if (v) { ui.quick.due = v; ui.quick.parsed = null; ui.quick.hint = ''; } render(); return; }
     if (el.dataset.f && ui.editDraft) {
       const f = el.dataset.f, d = ui.editDraft;
       if (f === 'due') { const v = fromLocalInput(el.value); if (v) d.due = v; render(); }
@@ -670,6 +772,30 @@
     };
     r.readAsText(file);
   }
+
+  // ---------- Swipe: right = complete / reopen, left = delete (with undo) ----------
+  let sw = null, swallowClick = false;
+  document.addEventListener('touchstart', e => {
+    const wrap = e.target.closest('[data-swipe]'); if (!wrap || e.target.closest('.check')) return;
+    const t = e.touches[0]; sw = { wrap, row: wrap.querySelector('.task'), x: t.clientX, y: t.clientY, dx: 0, active: false };
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    if (!sw) return; const t = e.touches[0], dx = t.clientX - sw.x, dy = t.clientY - sw.y;
+    if (!sw.active) { if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.3) { sw.active = true; sw.row.classList.add('dragging'); } else if (Math.abs(dy) > 10) { sw = null; return; } else return; }
+    sw.dx = Math.max(-160, Math.min(160, dx));
+    sw.row.style.transform = `translateX(${sw.dx}px)`;
+    sw.wrap.classList.toggle('right', sw.dx > 0); sw.wrap.classList.toggle('left', sw.dx < 0);
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    if (!sw) return; const { wrap, row, dx, active } = sw; sw = null;
+    if (!active) return; swallowClick = true; setTimeout(() => { swallowClick = false; }, 350);
+    row.classList.remove('dragging');
+    const t = S.get(wrap.dataset.swipe);
+    if (t && dx > 90) { row.style.transform = 'translateX(110%)'; setTimeout(() => S.toggle(t), 220); }
+    else if (t && dx < -90) { row.style.transform = 'translateX(-110%)'; row.style.opacity = '0'; setTimeout(() => S.remove(t), 220); }
+    else { row.style.transform = ''; setTimeout(() => wrap.classList.remove('left', 'right'), 300); }
+  });
+  document.addEventListener('click', e => { if (swallowClick) { e.stopPropagation(); e.preventDefault(); } }, true);
 
   // ---------- Boot ----------
   load();

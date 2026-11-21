@@ -1,6 +1,7 @@
 /* EGO FOCUS service worker: offline app shell. No data leaves the device. */
-const CACHE = 'egofocus-v3';
-const SHELL = ['./', 'index.html', 'styles.css?v=3', 'push-config.js?v=3', 'core.js?v=3', 'app.js?v=3', 'manifest.webmanifest',
+const CACHE = 'egofocus-v4';
+const SHELL = ['./', 'index.html', 'styles.css?v=4', 'push-config.js?v=4', 'core.js?v=4', 'app.js?v=4', 'manifest.webmanifest',
+  'fonts.css?v=4', 'fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2', 'fonts/ibm-plex-sans-arabic-arabic-500-normal.woff2', 'fonts/ibm-plex-sans-arabic-arabic-600-normal.woff2', 'fonts/ibm-plex-sans-arabic-latin-400-normal.woff2', 'fonts/ibm-plex-sans-arabic-latin-500-normal.woff2', 'fonts/ibm-plex-sans-arabic-latin-600-normal.woff2', 'fonts/readex-pro-arabic-500-normal.woff2', 'fonts/readex-pro-arabic-600-normal.woff2', 'fonts/readex-pro-arabic-700-normal.woff2', 'fonts/readex-pro-latin-500-normal.woff2', 'fonts/readex-pro-latin-600-normal.woff2', 'fonts/readex-pro-latin-700-normal.woff2',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
