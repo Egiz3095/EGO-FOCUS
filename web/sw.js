@@ -1,6 +1,6 @@
 /* EGO FOCUS service worker: offline app shell. No data leaves the device. */
-const CACHE = 'egofocus-v2';
-const SHELL = ['./', 'index.html', 'styles.css?v=2', 'push-config.js?v=2', 'core.js?v=2', 'app.js?v=2', 'manifest.webmanifest',
+const CACHE = 'egofocus-v3';
+const SHELL = ['./', 'index.html', 'styles.css?v=3', 'push-config.js?v=3', 'core.js?v=3', 'app.js?v=3', 'manifest.webmanifest',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => {
