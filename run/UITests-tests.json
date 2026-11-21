@@ -1,0 +1,107 @@
+{
+  "devices" : [
+    {
+      "architecture" : "arm64",
+      "deviceId" : "2A3281F2-5CD3-4D3F-856F-6476B1849F84",
+      "deviceName" : "iPhone 16",
+      "modelName" : "iPhone 16",
+      "osBuildNumber" : "22F77",
+      "osVersion" : "18.5",
+      "platform" : "iOS Simulator"
+    }
+  ],
+  "testNodes" : [
+    {
+      "children" : [
+        {
+          "children" : [
+            {
+              "children" : [
+                {
+                  "duration" : "15s",
+                  "durationInSeconds" : 15.367391109466553,
+                  "name" : "testAmbiguousCommandRequiresConfirmation()",
+                  "nodeIdentifier" : "EGOFocusUITests/testAmbiguousCommandRequiresConfirmation()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testAmbiguousCommandRequiresConfirmation",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "11s",
+                  "durationInSeconds" : 11.722609996795654,
+                  "name" : "testAssistantPreviewBeforeSaving()",
+                  "nodeIdentifier" : "EGOFocusUITests/testAssistantPreviewBeforeSaving()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testAssistantPreviewBeforeSaving",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "8s",
+                  "durationInSeconds" : 8.82987892627716,
+                  "name" : "testDarkAppearanceSetting()",
+                  "nodeIdentifier" : "EGOFocusUITests/testDarkAppearanceSetting()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testDarkAppearanceSetting",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "19s",
+                  "durationInSeconds" : 19.794738054275513,
+                  "name" : "testNotificationsAreScheduled()",
+                  "nodeIdentifier" : "EGOFocusUITests/testNotificationsAreScheduled()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testNotificationsAreScheduled",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "9s",
+                  "durationInSeconds" : 9.91791296005249,
+                  "name" : "testQuickAddFromHome()",
+                  "nodeIdentifier" : "EGOFocusUITests/testQuickAddFromHome()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testQuickAddFromHome",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "26s",
+                  "durationInSeconds" : 26.966555953025818,
+                  "name" : "testTabsNavigate()",
+                  "nodeIdentifier" : "EGOFocusUITests/testTabsNavigate()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testTabsNavigate",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "56s",
+                  "durationInSeconds" : 56.73304903507233,
+                  "name" : "testTaskLifecycleAndPersistence()",
+                  "nodeIdentifier" : "EGOFocusUITests/testTaskLifecycleAndPersistence()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests/testTaskLifecycleAndPersistence",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "EGOFocusUITests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests/EGOFocusUITests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            }
+          ],
+          "name" : "EGOFocusUITests",
+          "nodeIdentifierURL" : "test://com.apple.xcode/EGOFocus/EGOFocusUITests",
+          "nodeType" : "UI test bundle",
+          "result" : "Passed"
+        }
+      ],
+      "name" : "EGOFocus",
+      "nodeType" : "Test Plan",
+      "result" : "Passed"
+    }
+  ],
+  "testPlanConfigurations" : [
+    {
+      "configurationId" : "1",
+      "configurationName" : "Test Scheme Action"
+    }
+  ]
+}

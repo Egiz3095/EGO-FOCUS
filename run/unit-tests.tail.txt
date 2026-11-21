@@ -1,0 +1,133 @@
+Command line invocation:
+    /Applications/Xcode_16.4.app/Contents/Developer/usr/bin/xcodebuild test-without-building -project EGOFocus.xcodeproj -scheme EGOFocus -destination id=2A3281F2-5CD3-4D3F-856F-6476B1849F84 -derivedDataPath DerivedData "-only-testing:EGOFocusTests" -resultBundlePath results/UnitTests.xcresult
+
+Writing result bundle at path:
+	/Users/runner/work/EGO-FOCUS/EGO-FOCUS/results/UnitTests.xcresult
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:2A3281F2-5CD3-4D3F-856F-6476B1849F84, OS:18.5, name:iPhone 16 }
+{ platform:iOS Simulator, arch:x86_64, id:2A3281F2-5CD3-4D3F-856F-6476B1849F84, OS:18.5, name:iPhone 16 }
+2026-11-21 00:52:40.094135+0000 EGOFocus[14970:47171] [library] load_eligibility_plist: Failed to open /Users/runner/Library/Developer/CoreSimulator/Devices/2A3281F2-5CD3-4D3F-856F-6476B1849F84/data/Containers/Data/Application/DD1FDE34-4B9D-40D1-87FA-B78A72CBAD72/private/var/db/eligibilityd/eligibility.plist: No such file or directory(2)
+2026-11-21 00:52:40.531969+0000 EGOFocus[14970:47171] [library] load_eligibility_plist: Failed to open /Users/runner/Library/Developer/CoreSimulator/Devices/2A3281F2-5CD3-4D3F-856F-6476B1849F84/data/Containers/Data/Application/DD1FDE34-4B9D-40D1-87FA-B78A72CBAD72/private/var/db/eligibilityd/eligibility.plist: No such file or directory(2)
+Test Suite 'All tests' started at 2026-11-21 00:52:42.365.
+Test Suite 'EGOFocusTests.xctest' started at 2026-11-21 00:52:42.366.
+Test Suite 'NotificationActionTests' started at 2026-11-21 00:52:42.366.
+Test Case '-[EGOFocusTests.NotificationActionTests testMarkDoneActionCompletesTask]' started.
+Test Case '-[EGOFocusTests.NotificationActionTests testMarkDoneActionCompletesTask]' passed (0.052 seconds).
+Test Case '-[EGOFocusTests.NotificationActionTests testMarkDoneOnRecurringTaskMovesToNextOccurrence]' started.
+Test Case '-[EGOFocusTests.NotificationActionTests testMarkDoneOnRecurringTaskMovesToNextOccurrence]' passed (0.038 seconds).
+Test Case '-[EGOFocusTests.NotificationActionTests testSnoozeSchedulesTenMinuteReminder]' started.
+Test Case '-[EGOFocusTests.NotificationActionTests testSnoozeSchedulesTenMinuteReminder]' passed (0.023 seconds).
+Test Suite 'NotificationActionTests' passed at 2026-11-21 00:52:42.479.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.113 (0.113) seconds
+Test Suite 'ParserTests' started at 2026-11-21 00:52:42.480.
+Test Case '-[EGOFocusTests.ParserTests testAddTaskOnSunday]' started.
+Test Case '-[EGOFocusTests.ParserTests testAddTaskOnSunday]' passed (0.029 seconds).
+Test Case '-[EGOFocusTests.ParserTests testAmbiguousHourIsFlagged]' started.
+Test Case '-[EGOFocusTests.ParserTests testAmbiguousHourIsFlagged]' passed (0.021 seconds).
+Test Case '-[EGOFocusTests.ParserTests testArabicIndicDigitsAndMinutes]' started.
+Test Case '-[EGOFocusTests.ParserTests testArabicIndicDigitsAndMinutes]' passed (0.019 seconds).
+Test Case '-[EGOFocusTests.ParserTests testDailyRecurrence]' started.
+Test Case '-[EGOFocusTests.ParserTests testDailyRecurrence]' passed (0.025 seconds).
+Test Case '-[EGOFocusTests.ParserTests testDayAfterTomorrow]' started.
+Test Case '-[EGOFocusTests.ParserTests testDayAfterTomorrow]' passed (0.019 seconds).
+Test Case '-[EGOFocusTests.ParserTests testEgyptianToday]' started.
+Test Case '-[EGOFocusTests.ParserTests testEgyptianToday]' passed (0.019 seconds).
+Test Case '-[EGOFocusTests.ParserTests testExplicitNumericDate]' started.
+Test Case '-[EGOFocusTests.ParserTests testExplicitNumericDate]' passed (0.022 seconds).
+Test Case '-[EGOFocusTests.ParserTests testHalfPastWithPeriodWord]' started.
+Test Case '-[EGOFocusTests.ParserTests testHalfPastWithPeriodWord]' passed (0.019 seconds).
+Test Case '-[EGOFocusTests.ParserTests testLunchIsNotTomorrow]' started.
+Test Case '-[EGOFocusTests.ParserTests testLunchIsNotTomorrow]' passed (0.020 seconds).
+Test Case '-[EGOFocusTests.ParserTests testMeetingTomorrowAtThreeAfternoon]' started.
+Test Case '-[EGOFocusTests.ParserTests testMeetingTomorrowAtThreeAfternoon]' passed (0.020 seconds).
+Test Case '-[EGOFocusTests.ParserTests testMonthlyOn31st]' started.
+Test Case '-[EGOFocusTests.ParserTests testMonthlyOn31st]' passed (0.020 seconds).
+Test Case '-[EGOFocusTests.ParserTests testNoDateIsNotSilentlyAccepted]' started.
+Test Case '-[EGOFocusTests.ParserTests testNoDateIsNotSilentlyAccepted]' passed (0.026 seconds).
+Test Case '-[EGOFocusTests.ParserTests testPastTimeTodayIsFlagged]' started.
+Test Case '-[EGOFocusTests.ParserTests testPastTimeTodayIsFlagged]' passed (0.030 seconds).
+Test Case '-[EGOFocusTests.ParserTests testQuarterTo]' started.
+Test Case '-[EGOFocusTests.ParserTests testQuarterTo]' passed (0.030 seconds).
+Test Case '-[EGOFocusTests.ParserTests testRelativeHour]' started.
+Test Case '-[EGOFocusTests.ParserTests testRelativeHour]' passed (0.033 seconds).
+Test Case '-[EGOFocusTests.ParserTests testRemindBillsTomorrowAtTenMorning]' started.
+Test Case '-[EGOFocusTests.ParserTests testRemindBillsTomorrowAtTenMorning]' passed (0.042 seconds).
+Test Case '-[EGOFocusTests.ParserTests testReminderOffsetPhrase]' started.
+Test Case '-[EGOFocusTests.ParserTests testReminderOffsetPhrase]' passed (0.029 seconds).
+Test Case '-[EGOFocusTests.ParserTests testRentOnFirstOfMonth]' started.
+Test Case '-[EGOFocusTests.ParserTests testRentOnFirstOfMonth]' passed (0.021 seconds).
+Test Case '-[EGOFocusTests.ParserTests testWeeklyOnWeekday]' started.
+Test Case '-[EGOFocusTests.ParserTests testWeeklyOnWeekday]' passed (0.020 seconds).
+Test Suite 'ParserTests' passed at 2026-11-21 00:52:42.949.
+	 Executed 19 tests, with 0 failures (0 unexpected) in 0.465 (0.469) seconds
+Test Suite 'PersistenceTests' started at 2026-11-21 00:52:42.949.
+Test Case '-[EGOFocusTests.PersistenceTests testDataSurvivesReopeningTheStore]' started.
+Test Case '-[EGOFocusTests.PersistenceTests testDataSurvivesReopeningTheStore]' passed (0.071 seconds).
+Test Suite 'PersistenceTests' passed at 2026-11-21 00:52:43.021.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.071 (0.072) seconds
+Test Suite 'RecurrenceTests' started at 2026-11-21 00:52:43.021.
+Test Case '-[EGOFocusTests.RecurrenceTests testDailyAndWeekly]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testDailyAndWeekly]' passed (0.001 seconds).
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthly31stClampsThenReturns]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthly31stClampsThenReturns]' passed (0.001 seconds).
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthlyDecemberToJanuary]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthlyDecemberToJanuary]' passed (0.000 seconds).
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthlyLeapYear]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testMonthlyLeapYear]' passed (0.001 seconds).
+Test Case '-[EGOFocusTests.RecurrenceTests testNextOccurrenceSkipsMissedDays]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testNextOccurrenceSkipsMissedDays]' passed (0.000 seconds).
+Test Case '-[EGOFocusTests.RecurrenceTests testOccursOnProjection]' started.
+Test Case '-[EGOFocusTests.RecurrenceTests testOccursOnProjection]' passed (0.000 seconds).
+Test Suite 'RecurrenceTests' passed at 2026-11-21 00:52:43.027.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'ReminderPlannerTests' started at 2026-11-21 00:52:43.027.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testIdentifierParsing]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testIdentifierParsing]' passed (0.002 seconds).
+Test Case '-[EGOFocusTests.ReminderPlannerTests testOffsetsProduceOneRequestEach]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testOffsetsProduceOneRequestEach]' passed (0.003 seconds).
+Test Case '-[EGOFocusTests.ReminderPlannerTests testOverdueRecurringTaskRemindsForNextOccurrence]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testOverdueRecurringTaskRemindsForNextOccurrence]' passed (0.001 seconds).
+Test Case '-[EGOFocusTests.ReminderPlannerTests testPastFireTimesAndCompletedTasksAreSkipped]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testPastFireTimesAndCompletedTasksAreSkipped]' passed (0.001 seconds).
+Test Case '-[EGOFocusTests.ReminderPlannerTests testRepeatedPlanningIsStable]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testRepeatedPlanningIsStable]' passed (0.002 seconds).
+Test Case '-[EGOFocusTests.ReminderPlannerTests testRespectsSystemLimit]' started.
+Test Case '-[EGOFocusTests.ReminderPlannerTests testRespectsSystemLimit]' passed (0.002 seconds).
+Test Suite 'ReminderPlannerTests' passed at 2026-11-21 00:52:43.040.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.011 (0.013) seconds
+Test Suite 'StoreTests' started at 2026-11-21 00:52:43.045.
+Test Case '-[EGOFocusTests.StoreTests testCalendarProjectsRecurringTasks]' started.
+Test Case '-[EGOFocusTests.StoreTests testCalendarProjectsRecurringTasks]' passed (0.007 seconds).
+Test Case '-[EGOFocusTests.StoreTests testCompleteAndReopen]' started.
+Test Case '-[EGOFocusTests.StoreTests testCompleteAndReopen]' passed (0.016 seconds).
+Test Case '-[EGOFocusTests.StoreTests testCompletionRate]' started.
+Test Case '-[EGOFocusTests.StoreTests testCompletionRate]' passed (0.008 seconds).
+Test Case '-[EGOFocusTests.StoreTests testCreateEditDelete]' started.
+Test Case '-[EGOFocusTests.StoreTests testCreateEditDelete]' passed (0.008 seconds).
+Test Case '-[EGOFocusTests.StoreTests testDeleteCascadesStatistics]' started.
+Test Case '-[EGOFocusTests.StoreTests testDeleteCascadesStatistics]' passed (0.008 seconds).
+Test Case '-[EGOFocusTests.StoreTests testEmptyTitleIsRejected]' started.
+Test Case '-[EGOFocusTests.StoreTests testEmptyTitleIsRejected]' passed (0.003 seconds).
+Test Case '-[EGOFocusTests.StoreTests testMonthlyAnchorIsKept]' started.
+Test Case '-[EGOFocusTests.StoreTests testMonthlyAnchorIsKept]' passed (0.010 seconds).
+Test Case '-[EGOFocusTests.StoreTests testRecurringCompletionAdvancesWithoutDuplicates]' started.
+Test Case '-[EGOFocusTests.StoreTests testRecurringCompletionAdvancesWithoutDuplicates]' passed (0.006 seconds).
+Test Case '-[EGOFocusTests.StoreTests testSectionsDoNotOverlap]' started.
+Test Case '-[EGOFocusTests.StoreTests testSectionsDoNotOverlap]' passed (0.014 seconds).
+Test Suite 'StoreTests' passed at 2026-11-21 00:52:43.127.
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.080 (0.082) seconds
+Test Suite 'EGOFocusTests.xctest' passed at 2026-11-21 00:52:43.127.
+	 Executed 44 tests, with 0 failures (0 unexpected) in 0.745 (0.761) seconds
+Test Suite 'All tests' passed at 2026-11-21 00:52:43.127.
+	 Executed 44 tests, with 0 failures (0 unexpected) in 0.745 (0.762) seconds
+2026-11-21 00:52:43.559 xcodebuild[14401:45756] [MT] IDETestOperationsObserverDebug: 11.881 elapsed -- Testing started completed.
+2026-11-21 00:52:43.559 xcodebuild[14401:45756] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-21 00:52:43.559 xcodebuild[14401:45756] [MT] IDETestOperationsObserverDebug: 11.881 sec, +11.881 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/EGO-FOCUS/EGO-FOCUS/results/UnitTests.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

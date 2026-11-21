@@ -1,0 +1,200 @@
+    t =    19.83s     Checking existence of `"reports.completion" Other`
+    t =    19.88s Collecting debug information to assist test failure triage
+    t =    19.89s     Requesting snapshot of accessibility hierarchy for app with pid 10664
+    t =    20.00s Waiting 5.0s for "نسبة الإنجاز" StaticText to exist
+    t =    21.01s     Checking `Expect predicate `existsNoRetry == 1` for object "نسبة الإنجاز" StaticText`
+    t =    21.02s         Checking existence of `"نسبة الإنجاز" StaticText`
+    t =    21.37s Added attachment named '12-reports'
+    t =    21.37s Tap "الإعدادات" Button
+    t =    21.37s     Wait for com.egofocus.tasks to idle
+    t =    21.38s     Find the "الإعدادات" Button
+    t =    21.45s     Check for interrupting elements affecting "الإعدادات" Button
+    t =    21.53s     Synthesize event
+    t =    21.86s     Wait for com.egofocus.tasks to idle
+    t =    22.29s Waiting 5.0s for "الإعدادات" NavigationBar to exist
+    t =    23.31s     Checking `Expect predicate `existsNoRetry == 1` for object "الإعدادات" NavigationBar`
+    t =    23.31s         Checking existence of `"الإعدادات" NavigationBar`
+    t =    23.44s Checking existence of `"EGO FOCUS" StaticText`
+    t =    23.51s Swipe up Target Application 'com.egofocus.tasks'
+    t =    23.51s     Wait for com.egofocus.tasks to idle
+    t =    23.51s     Find the Target Application 'com.egofocus.tasks'
+    t =    23.56s     Check for interrupting elements affecting "EGO FOCUS" Application
+    t =    23.62s     Synthesize event
+    t =    24.04s     Wait for com.egofocus.tasks to idle
+    t =    24.79s Checking existence of `"EGO FOCUS" StaticText`
+    t =    25.06s Checking existence of `"EGO FOCUS" StaticText`
+    t =    25.14s Checking existence of `"EGO FOCUS" StaticText`
+    t =    25.24s Checking existence of `"EGO FOCUS" StaticText`
+    t =    25.34s Checking existence of `"EGO FOCUS" StaticText`
+    t =    25.43s Waiting 5.0s for "EGO FOCUS" StaticText to exist
+    t =    26.48s     Checking `Expect predicate `existsNoRetry == 1` for object "EGO FOCUS" StaticText`
+    t =    26.48s         Checking existence of `"EGO FOCUS" StaticText`
+    t =    26.73s Added attachment named '13-settings'
+    t =    26.73s Tear Down
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTabsNavigate]' passed (26.967 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTaskLifecycleAndPersistence]' started.
+    t =     0.00s Start Test at 2026-11-21 00:51:27.610
+    t =     0.04s Set Up
+    t =     0.04s Open com.egofocus.tasks
+    t =     0.04s     Launch com.egofocus.tasks
+    t =     0.04s         Terminate com.egofocus.tasks:10664
+    t =    22.66s         Setting up automation session
+    t =    24.05s         Wait for com.egofocus.tasks to idle
+    t =    25.78s Waiting 10.0s for "الرئيسية" Button to exist
+    t =    26.80s     Checking `Expect predicate `existsNoRetry == 1` for object "الرئيسية" Button`
+    t =    26.80s         Checking existence of `"الرئيسية" Button`
+    t =    26.95s Tap "addTaskButton" Button
+    t =    26.95s     Wait for com.egofocus.tasks to idle
+    t =    26.96s     Find the "addTaskButton" Button
+    t =    27.02s     Check for interrupting elements affecting "addTaskButton" Button
+    t =    27.08s     Synthesize event
+    t =    27.40s     Wait for com.egofocus.tasks to idle
+    t =    27.85s Waiting 5.0s for "editor.title" TextField to exist
+    t =    28.90s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.title" TextField`
+    t =    28.90s         Checking existence of `"editor.title" TextField`
+    t =    29.10s Tap "editor.title" TextField
+    t =    29.10s     Wait for com.egofocus.tasks to idle
+    t =    29.11s     Find the "editor.title" TextField
+    t =    29.17s     Check for interrupting elements affecting "editor.title" TextField
+    t =    29.25s     Synthesize event
+    t =    29.57s     Wait for com.egofocus.tasks to idle
+    t =    29.95s Type 'UI Lifecycle Task' into "editor.title" TextField
+    t =    29.95s     Wait for com.egofocus.tasks to idle
+    t =    30.03s     Find the "editor.title" TextField
+    t =    31.01s     Check for interrupting elements affecting "editor.title" TextField
+    t =    31.18s     Synthesize event
+    t =    31.71s     Wait for com.egofocus.tasks to idle
+    t =    31.73s Tap "editor.save" Button
+    t =    31.73s     Wait for com.egofocus.tasks to idle
+    t =    31.93s     Find the "editor.save" Button
+    t =    32.14s     Check for interrupting elements affecting "editor.save" Button
+    t =    32.34s     Synthesize event
+    t =    32.75s     Wait for com.egofocus.tasks to idle
+    t =    32.92s Waiting 5.0s for StaticText (First Match) to exist
+    t =    33.97s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    33.97s         Checking existence of `StaticText (First Match)`
+    t =    34.22s Added attachment named '01-created'
+    t =    34.22s Tap StaticText (First Match)
+    t =    34.22s     Wait for com.egofocus.tasks to idle
+    t =    34.23s     Find the StaticText (First Match)
+    t =    34.31s     Check for interrupting elements affecting "UI Lifecycle Task" StaticText
+    t =    34.35s     Synthesize event
+    t =    34.65s     Wait for com.egofocus.tasks to idle
+    t =    34.72s Waiting 5.0s for "editor.title" TextField to exist
+    t =    35.75s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.title" TextField`
+    t =    35.75s         Checking existence of `"editor.title" TextField`
+    t =    35.93s Tap "editor.title" TextField
+    t =    35.93s     Wait for com.egofocus.tasks to idle
+    t =    35.93s     Find the "editor.title" TextField
+    t =    36.04s     Check for interrupting elements affecting "editor.title" TextField
+    t =    36.10s     Synthesize event
+    t =    36.44s     Wait for com.egofocus.tasks to idle
+    t =    36.45s Type ' Edited' into "editor.title" TextField
+    t =    36.45s     Wait for com.egofocus.tasks to idle
+    t =    36.50s     Find the "editor.title" TextField
+    t =    36.62s     Check for interrupting elements affecting "editor.title" TextField
+    t =    36.73s     Synthesize event
+    t =    37.05s     Wait for com.egofocus.tasks to idle
+    t =    37.05s Checking existence of `"editor.notes" TextField`
+    t =    37.13s Tap "editor.save" Button
+    t =    37.13s     Wait for com.egofocus.tasks to idle
+    t =    37.14s     Find the "editor.save" Button
+    t =    37.22s     Check for interrupting elements affecting "editor.save" Button
+    t =    37.27s     Synthesize event
+    t =    37.58s     Wait for com.egofocus.tasks to idle
+    t =    37.58s Waiting 5.0s for StaticText (First Match) to exist
+    t =    38.64s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    38.64s         Checking existence of `StaticText (First Match)`
+    t =    38.68s Waiting 5.0s for Button (First Match) to exist
+    t =    39.72s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    39.72s         Checking existence of `Button (First Match)`
+    t =    39.77s Tap Button (First Match)
+    t =    39.77s     Wait for com.egofocus.tasks to idle
+    t =    39.77s     Find the Button (First Match)
+    t =    39.80s     Check for interrupting elements affecting "circle" Button
+    t =    39.84s     Synthesize event
+    t =    40.14s     Wait for com.egofocus.tasks to idle
+    t =    40.46s Waiting 5.0s for Button (First Match) to exist
+    t =    41.53s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    41.53s         Checking existence of `Button (First Match)`
+    t =    41.74s Added attachment named '02-completed'
+    t =    41.74s Terminate com.egofocus.tasks:11418
+    t =    42.78s Open com.egofocus.tasks
+    t =    42.79s     Launch com.egofocus.tasks
+    t =    43.29s         Setting up automation session
+    t =    44.23s         Wait for com.egofocus.tasks to idle
+    t =    45.86s Waiting 10.0s for StaticText (First Match) to exist
+    t =    46.87s     Checking `Expect predicate `existsNoRetry == 1` for object StaticText (First Match)`
+    t =    46.87s         Checking existence of `StaticText (First Match)`
+    t =    46.96s Checking existence of `Button (First Match)`
+    t =    47.02s Tap Button (First Match)
+    t =    47.02s     Wait for com.egofocus.tasks to idle
+    t =    47.02s     Find the Button (First Match)
+    t =    47.06s     Check for interrupting elements affecting "checkmark.circle.fill" Button
+    t =    47.09s     Synthesize event
+    t =    47.10s         Scroll element to visible
+    t =    47.11s         Find the "checkmark.circle.fill" Button
+    t =    47.18s         Computed hit point {343, 753} after scrolling to visible
+    t =    47.47s     Wait for com.egofocus.tasks to idle
+    t =    47.49s Waiting 5.0s for Button (First Match) to exist
+    t =    48.55s     Checking `Expect predicate `existsNoRetry == 1` for object Button (First Match)`
+    t =    48.55s         Checking existence of `Button (First Match)`
+    t =    48.60s Tap StaticText (First Match)
+    t =    48.61s     Wait for com.egofocus.tasks to idle
+    t =    48.61s     Find the StaticText (First Match)
+    t =    48.67s     Check for interrupting elements affecting "EditedUI Lifecycle Task" StaticText
+    t =    48.71s     Synthesize event
+    t =    49.02s     Wait for com.egofocus.tasks to idle
+    t =    49.27s Waiting 5.0s for "editor.title" TextField to exist
+    t =    50.31s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.title" TextField`
+    t =    50.31s         Checking existence of `"editor.title" TextField`
+    t =    50.50s Checking existence of `"editor.delete" Button`
+    t =    50.59s Swipe up Target Application 'com.egofocus.tasks'
+    t =    50.59s     Wait for com.egofocus.tasks to idle
+    t =    50.59s     Find the Target Application 'com.egofocus.tasks'
+    t =    50.65s     Check for interrupting elements affecting "EGO FOCUS" Application
+    t =    50.71s     Synthesize event
+    t =    51.15s     Wait for com.egofocus.tasks to idle
+    t =    51.89s Checking existence of `"editor.delete" Button`
+    t =    51.97s Checking existence of `"editor.delete" Button`
+    t =    52.03s Checking existence of `"editor.delete" Button`
+    t =    52.11s Checking existence of `"editor.delete" Button`
+    t =    52.17s Checking existence of `"editor.delete" Button`
+    t =    52.23s Waiting 5.0s for "editor.delete" Button to exist
+    t =    53.25s     Checking `Expect predicate `existsNoRetry == 1` for object "editor.delete" Button`
+    t =    53.25s         Checking existence of `"editor.delete" Button`
+    t =    53.33s Tap "editor.delete" Button
+    t =    53.33s     Wait for com.egofocus.tasks to idle
+    t =    53.33s     Find the "editor.delete" Button
+    t =    53.40s     Check for interrupting elements affecting "editor.delete" Button
+    t =    53.45s     Synthesize event
+    t =    53.75s     Wait for com.egofocus.tasks to idle
+    t =    53.75s Waiting 5.0s for "حذف نهائياً" Button to exist
+    t =    54.78s     Checking `Expect predicate `existsNoRetry == 1` for object "حذف نهائياً" Button`
+    t =    54.78s         Checking existence of `"حذف نهائياً" Button`
+    t =    54.91s Tap "حذف نهائياً" Button
+    t =    54.91s     Wait for com.egofocus.tasks to idle
+    t =    54.92s     Find the "حذف نهائياً" Button
+    t =    55.01s     Check for interrupting elements affecting "حذف نهائياً" Button
+    t =    55.07s     Synthesize event
+    t =    55.36s     Wait for com.egofocus.tasks to idle
+    t =    56.45s Checking `Expect predicate `exists == 0` for object StaticText (First Match)`
+    t =    56.45s     Checking existence of `StaticText (First Match)`
+    t =    56.52s Tear Down
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTaskLifecycleAndPersistence]' passed (56.733 seconds).
+Test Suite 'EGOFocusUITests' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.334) seconds
+Test Suite 'EGOFocusUITests.xctest' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.335) seconds
+Test Suite 'All tests' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.339) seconds
+2026-11-21 00:52:25.475 xcodebuild[6530:23320] [MT] IDETestOperationsObserverDebug: 178.213 elapsed -- Testing started completed.
+2026-11-21 00:52:25.475 xcodebuild[6530:23320] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
+2026-11-21 00:52:25.475 xcodebuild[6530:23320] [MT] IDETestOperationsObserverDebug: 178.213 sec, +178.213 sec -- end
+
+Test session results, code coverage, and logs:
+	/Users/runner/work/EGO-FOCUS/EGO-FOCUS/results/UITests.xcresult
+
+** TEST EXECUTE SUCCEEDED **
+
+Testing started

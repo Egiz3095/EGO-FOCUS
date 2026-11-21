@@ -1,0 +1,68 @@
+Dict {
+    UIRequiredDeviceCapabilities = Array {
+        arm64
+    }
+    CFBundleInfoDictionaryVersion = 6.0
+    DTPlatformVersion = 18.5
+    CFBundleName = EGOFocus
+    DTSDKName = iphoneos18.5
+    CFBundleIcons = Dict {
+        CFBundlePrimaryIcon = Dict {
+            CFBundleIconFiles = Array {
+                AppIcon60x60
+            }
+            CFBundleIconName = AppIcon
+        }
+    }
+    UILaunchScreen = Dict {
+        UILaunchScreen = Dict {
+        }
+    }
+    LSApplicationCategoryType = public.app-category.productivity
+    CFBundleDisplayName = EGO FOCUS
+    LSRequiresIPhoneOS = true
+    DTSDKBuild = 22F76
+    NSAccentColorName = AccentColor
+    CFBundleShortVersionString = 1.0.0
+    CFBundleSupportedPlatforms = Array {
+        iPhoneOS
+    }
+    UISupportedInterfaceOrientations = Array {
+        UIInterfaceOrientationPortrait
+    }
+    BuildMachineOSBuild = 24H232
+    DTPlatformBuild = 22F76
+    CFBundlePackageType = APPL
+    DTXcodeBuild = 16F6
+    CFBundleDevelopmentRegion = ar
+    MinimumOSVersion = 17.0
+    CFBundleVersion = 2
+    NSSpeechRecognitionUsageDescription = يستخدم إيجو فوكس التعرف على الكلام من Apple لتحويل المهام التي تمليها بالعربية إلى نص تراجعه قبل الحفظ.
+    UIDeviceFamily = Array {
+        1
+    }
+    CFBundleLocalizations = Array {
+        ar
+    }
+    NSMicrophoneUsageDescription = يستخدم إيجو فوكس الميكروفون فقط عند ضغطك زر الإملاء لتحويل كلامك إلى مهمة.
+    CFBundleIdentifier = com.egofocus.tasks
+    UIApplicationSceneManifest = Dict {
+        UIApplicationSupportsMultipleScenes = true
+        UISceneConfigurations = Dict {
+        }
+    }
+    DTXcode = 1640
+    UIApplicationSupportsIndirectInputEvents = true
+    CFBundleExecutable = EGOFocus
+    CFBundleIcons~ipad = Dict {
+        CFBundlePrimaryIcon = Dict {
+            CFBundleIconFiles = Array {
+                AppIcon60x60
+                AppIcon76x76
+            }
+        }
+    }
+    DTPlatformName = iphoneos
+    ITSAppUsesNonExemptEncryption = false
+    DTCompiler = com.apple.compilers.llvm.clang.1_0
+}

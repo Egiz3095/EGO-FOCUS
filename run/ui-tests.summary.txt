@@ -1,0 +1,24 @@
+Test Suite 'All tests' started at 2026-11-21 00:49:55.004.
+Test Suite 'EGOFocusUITests.xctest' started at 2026-11-21 00:49:55.008.
+Test Suite 'EGOFocusUITests' started at 2026-11-21 00:49:55.008.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testAmbiguousCommandRequiresConfirmation]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testAmbiguousCommandRequiresConfirmation]' passed (15.367 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testAssistantPreviewBeforeSaving]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testAssistantPreviewBeforeSaving]' passed (11.723 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testDarkAppearanceSetting]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testDarkAppearanceSetting]' passed (8.830 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testNotificationsAreScheduled]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testNotificationsAreScheduled]' passed (19.795 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testQuickAddFromHome]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testQuickAddFromHome]' passed (9.918 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTabsNavigate]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTabsNavigate]' passed (26.967 seconds).
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTaskLifecycleAndPersistence]' started.
+Test Case '-[EGOFocusUITests.EGOFocusUITests testTaskLifecycleAndPersistence]' passed (56.733 seconds).
+Test Suite 'EGOFocusUITests' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.334) seconds
+Test Suite 'EGOFocusUITests.xctest' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.335) seconds
+Test Suite 'All tests' passed at 2026-11-21 00:52:24.343.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 149.332 (149.339) seconds
+** TEST EXECUTE SUCCEEDED **

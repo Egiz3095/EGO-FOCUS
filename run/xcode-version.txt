@@ -1,0 +1,7 @@
+Xcode 16.4
+Build version 16F6
+iOS SDKs:
+	iOS 18.5                      	-sdk iphoneos18.5
+iOS Simulator SDKs:
+	Simulator - iOS 18.5          	-sdk iphonesimulator18.5
+iPhone 16 — com.apple.CoreSimulator.SimRuntime.iOS-18-5
